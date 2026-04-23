@@ -11,7 +11,9 @@ const checkDocker = spawnSync('docker', ['--version'], {
 })
 
 if (checkDocker.status !== 0) {
-  console.error('Docker is required for OWASP ZAP baseline scan but is not available.')
+  console.error(
+    'Docker is required for OWASP ZAP baseline scan but is not available.'
+  )
   process.exit(1)
 }
 
