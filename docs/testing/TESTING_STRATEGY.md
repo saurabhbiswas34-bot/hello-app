@@ -5,6 +5,10 @@
 This document defines **how we split tests** in this repo (Vitest + Testing Library for units, Playwright for E2E), what belongs in each layer, and how to know a change is proven. It complements `package.json` scripts and the pre-commit pipeline described in [../quality/QUALITY_GATES.md](../quality/QUALITY_GATES.md).
 
 **Related docs:** Run commands from [../setup/BOOTSTRAP_COMMANDS.md](../setup/BOOTSTRAP_COMMANDS.md) when you need a paste list; component and data boundaries for tests [../architecture/ARCHITECTURE.md](../architecture/ARCHITECTURE.md).
+Also see implementation conventions:
+
+- [../conventions/COMPONENT_GUIDE.md](../conventions/COMPONENT_GUIDE.md)
+- [../conventions/FEATURE_GUIDE.md](../conventions/FEATURE_GUIDE.md)
 
 ## When to Use This Doc
 
@@ -19,14 +23,14 @@ This document defines **how we split tests** in this repo (Vitest + Testing Libr
 
 ## Scope Split
 
-| Layer    | Role                                                     | Tooling                                        |
-| -------- | -------------------------------------------------------- | ---------------------------------------------- |
-| **Unit** | Component logic, UI states, interactions in isolation    | Vitest + Testing Library (`src/**/*.test.jsx`) |
-| **E2E**  | User journeys in a real browser, integrated app behavior | Playwright (`tests/e2e/*.spec.js`)             |
+| Layer    | Role                                                     | Tooling                                             |
+| -------- | -------------------------------------------------------- | --------------------------------------------------- |
+| **Unit** | Component logic, UI states, interactions in isolation    | Vitest + Testing Library (`src/**/*.test.{ts,tsx}`) |
+| **E2E**  | User journeys in a real browser, integrated app behavior | Playwright (`tests/e2e/*.spec.js`)                  |
 
 **Rule of thumb:** If you can prove behavior without spinning a server and driving the full page, prefer a unit test. If the bug is about real DOM, routing, or cross-component integration, prefer E2E.
 
-## Unit Tests (`src/**/*.test.jsx`)
+## Unit Tests (`src/**/*.test.{ts,tsx}`)
 
 **Framework:** Vitest + Testing Library.
 
@@ -53,10 +57,12 @@ This document defines **how we split tests** in this repo (Vitest + Testing Libr
 - Real input (click, keyboard where relevant)
 - Flow across state and rendering
 
-**Current critical flow (example):**
+**Current critical flows (examples):**
 
-- Open accordion item content visible
-- Close accordion item content hidden
+- App shell route navigation (`/`, `/users`, `/products`)
+- Users page rendering with data mapping
+- Products page rendering with grid/cards
+- Accordion item open/close behavior where used
 
 Extend E2E when a path is **user-visible** and **regression-prone** not for every permutation.
 

@@ -9,8 +9,16 @@ Use this as the base when starting a new UI project that needs:
 - Linting, formatting, security checks, dead-code checks, and bundle-size checks
 - Unit tests (Vitest) + E2E tests (Playwright)
 - Accessibility checks (axe)
+- BEM CSS architecture for all component/feature styling
+- TypeScript-only React code (`.tsx` / `.ts`)
 - Husky pre-commit and pre-push hooks
 - GitHub Actions CI/CD with GitHub Pages deployment
+
+Current route demos:
+
+- `/` Home
+- `/users` Users accordion list
+- `/products` Product card grid
 
 ## Quick Start
 
@@ -26,6 +34,16 @@ npm run check:all
 npm run test:all
 npm run check:ci
 ```
+
+## Environment
+
+API base URL is configurable:
+
+```bash
+VITE_API_BASE_URL=https://dummyjson.com
+```
+
+If not provided, the app defaults to `https://dummyjson.com`.
 
 ## Reports
 
@@ -54,3 +72,5 @@ For reusable bootstrap guidance and reference configs:
 - Skill process guide: `.cursor/skills/react-quality-starter/SKILL.md`
 - Copy-paste reference: `.cursor/skills/react-quality-starter/reference.md`
 - Project setup docs: `docs/setup/CONTEXT_SETUP.md`
+- Component conventions: `docs/conventions/COMPONENT_GUIDE.md`
+- Feature conventions: `docs/conventions/FEATURE_GUIDE.md`

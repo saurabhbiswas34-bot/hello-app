@@ -1,5 +1,0 @@
-export interface FaqItem {
-  id: string
-  title: string
-  content: string
-}

@@ -13,9 +13,10 @@ Create a new React app with Atomic Design, Zustand for state, SWR for data fetch
   - `src/components/atoms`
   - `src/components/molecules`
   - `src/components/organisms`
-  - `src/components/templates`
+  - `src/features/<feature>`
+  - `src/app`
 - Zustand + SWR wired into a sample feature.
-- Unit test(s) under `src/**/*.test.jsx`.
+- Unit test(s) under `src/**/*.test.{ts,tsx}`.
 - E2E test(s) under `tests/e2e`.
 - Scripts for lint/security/vuln/a11y/tests/precommit added.
 - Husky pre-commit hook runs full verification pipeline.
@@ -48,11 +49,11 @@ I already have a React app. Add oxlint, accessibility scan, vulnerability check,
 
 ### Prompt
 
-Add unit and Playwright tests for my accordion component and make sure all tests pass.
+Add unit and Playwright tests for my users/products routes and make sure all tests pass.
 
 ### Expected outcome
 
-- Unit test validates open/close behavior and rendering.
+- Unit test validates route rendering and loading/error/success states.
 - Playwright test validates user flow in real browser.
 - `test:unit`, `test:e2e`, and `test:all` scripts added/updated.
 - Playwright browser installed with `npx playwright install chromium`.
@@ -85,3 +86,57 @@ Create reusable docs for setup commands, quality gates, testing strategy, and ar
 - `docs/testing/TESTING_STRATEGY.md`
 - `docs/architecture/ARCHITECTURE.md`
 - Docs are concise, copy-paste friendly, and aligned with package scripts.
+
+## Example 6: Add reusable component (Atomic Design)
+
+### Prompt
+
+Create a reusable `Badge` component and use it in Product cards. Follow Atomic Design and keep CSS near the component.
+
+### Expected outcome
+
+- `Badge` added under the correct layer (typically `src/components/atoms/Badge.tsx`).
+- `Badge.css` and `Badge.test.tsx` are co-located.
+- Product card imports and uses `Badge` without embedding badge styles inline.
+- Tests and lint/type checks pass after integration.
+
+## Example 7: Modify existing component API
+
+### Prompt
+
+Update `ProductCard` to support an optional `onSelect` callback and keep backward compatibility.
+
+### Expected outcome
+
+- Component props updated with proper TypeScript typing.
+- Existing callers keep working; affected callers updated if required.
+- Component tests updated for old and new behavior.
+- No feature-route behavior changed unintentionally.
+
+## Example 8: Remove a component safely
+
+### Prompt
+
+Remove the `Accordion` page component and its CSS, and clean up all references.
+
+### Expected outcome
+
+- Component files removed.
+- Route and navigation references removed.
+- Related tests updated to reflect new behavior.
+- Docs updated so removed component is not still documented.
+- Typecheck/lint/tests pass after cleanup.
+
+## Example 9: Remove a feature safely
+
+### Prompt
+
+Remove the FAQ feature route entirely and keep Users/Products/Home working.
+
+### Expected outcome
+
+- Feature route removed from `App.tsx`.
+- Navbar entry removed.
+- Feature files and tests removed or updated.
+- Architecture/testing docs reflect new route set.
+- No dead imports or orphan files remain.

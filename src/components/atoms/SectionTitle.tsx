@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import './SectionTitle.css'
 
 interface SectionTitleProps {
   children: ReactNode

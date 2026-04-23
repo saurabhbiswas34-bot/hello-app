@@ -1,0 +1,31 @@
+.accordion__item + .accordion__item {
+  border-top: 1px solid var(--border);
+}
+
+.accordion__trigger {
+  width: 100%;
+  border: 0;
+  padding: 16px 20px;
+  color: var(--text-h);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: inherit;
+  text-align: left;
+}
+
+.accordion__trigger:hover {
+  background: var(--accent-bg);
+}
+
+.accordion__icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.accordion__content {
+  margin: 0;
+  padding: 0 20px 18px;
+}

@@ -2,82 +2,130 @@
 
 ## Overview
 
-This document describes **how this app is structured**: Atomic Design layers for UI, where data and global UI state live (SWR + Zustand), and how rendering flows from `App` into feature templates. It also maps **quality tooling** to that structure so architecture includes how we keep the codebase healthy.
+This app is a Vite + React + TypeScript SPA with:
 
-**Related:** Setup recreation [../setup/CONTEXT_SETUP.md](../setup/CONTEXT_SETUP.md). Testing [../testing/TESTING_STRATEGY.md](../testing/TESTING_STRATEGY.md).
+- `react-router-dom` for route navigation
+- SWR hooks for feature data fetching
+- Zustand for shared accordion open/close UI state
+- Atomic Design-inspired UI folders (`atoms`, `molecules`, `organisms`)
+- feature-first folders for pages and feature-owned types
 
-## When to Use This Doc
+Related docs:
 
-- Onboarding or explaining where a new feature should live (atom vs organism vs template).
-- Tracing data from source hook UI.
-- Aligning a refactor with existing boundaries (store vs local state).
+- Setup flow: [../setup/CONTEXT_SETUP.md](../setup/CONTEXT_SETUP.md)
+- Quality checks: [../quality/QUALITY_GATES.md](../quality/QUALITY_GATES.md)
+- Testing scope: [../testing/TESTING_STRATEGY.md](../testing/TESTING_STRATEGY.md)
+- Component conventions: [../conventions/COMPONENT_GUIDE.md](../conventions/COMPONENT_GUIDE.md)
+- Feature conventions: [../conventions/FEATURE_GUIDE.md](../conventions/FEATURE_GUIDE.md)
 
-## When NOT to Use This Doc as the Only Source
+## High-Level Flow
 
-- **Exact file lists** drift; verify paths in the repo if this doc and code disagree **code wins**, then update this file.
-- **Three.js / WebGL** integration is covered in [../threejs-react-guide.md](../threejs-react-guide.md), not here.
+1. `src/app/main.tsx` mounts `App` and global `index.css`.
+2. `src/app/App.tsx` defines routes and lazy-loads page components.
+3. `src/app/AppShell.tsx` renders shell layout and `Navbar`, then route content via `Outlet`.
+4. Feature pages (`Home`, `Users`, `Products`) fetch/render data through feature hooks and reusable UI components.
 
-## UI Organization: Atomic Design
+## Folder Model
 
-Components are grouped by responsibility:
+```text
+src/
+  app/
+    App.tsx
+    AppShell.tsx
+  components/
+    atoms/
+    molecules/
+    organisms/
+  config/
+    api.ts
+  features/
+    home/
+    users/
+      hooks/
+      types/
+    products/
+      hooks/
+      types/
+  types/
+    accordion.ts   # shared contract
+```
 
-| Layer       | Role                              | Example (this app) |
-| ----------- | --------------------------------- | ------------------ |
-| `atoms`     | Smallest reusable primitives      | Section title      |
-| `molecules` | Small compositions                | Accordion item     |
-| `organisms` | Feature-level groups              | Accordion list     |
-| `templates` | Page-level layout and data wiring | Accordion template |
+### Ownership rules
 
-Paths live under `src/components/{atoms,molecules,organisms,templates}/`.
+- Feature-owned contracts live in feature folders (for example `features/users/types/user.ts`).
+- Truly shared contracts remain in `src/types` (currently `accordion.ts`).
+- Shared reusable UI lives in `src/components`.
+- Route pages live in `src/features/*` and are mounted from `src/app/App.tsx`.
+- React app code is TypeScript-only (`.tsx` for components/pages, `.ts` for modules).
 
-## Data Flow
+### Atomic Design placement rules
 
-### Data fetching
+- `atoms`: smallest reusable primitives; no feature fetch/store logic
+- `molecules`: small compositions of atoms
+- `organisms`: larger reusable compositions used across pages/features
+- Feature page wiring belongs in `src/features`, not in shared atoms/molecules
 
-- **Source:** mock FAQ data (`src/data/mockFaqs.js`)
-- **Hook:** `src/hooks/useAccordionData.js` (SWR `useSWR`)
-- **Consumer:** template uses `{ items, isLoading, error }`
+## Routing and Page Composition
 
-### State management
+Routes currently exposed:
 
-- **Store:** `src/store/useAccordionStore.js` (Zustand)
-- **State:** `openItemId`
-- **Action:** `toggleItem(itemId)`
-- **Behavior:** same control toggles closed; another item opens and switches the active panel
+- `/` -> `Home`
+- `/users` -> `Users`
+- `/products` -> `Products`
 
-### Rendering flow
+`App` uses `React.lazy` + `Suspense` for route-level code splitting.
 
-1. `App` renders `AccordionTemplate`
-2. `AccordionTemplate` loads data via the SWR hook
-3. `AccordionList` maps items into `AccordionItem`
-4. Each `AccordionItem` reads/writes open state through the Zustand store
+## Data and State
+
+### API endpoints
+
+- Centralized in `src/config/api.ts`
+- Uses `VITE_API_BASE_URL` with `https://dummyjson.com` fallback
+- Hooks consume `API_ENDPOINTS` instead of hardcoded URLs
+
+### Feature hooks
+
+- `features/users/hooks/useUsersData.ts`
+- `features/products/hooks/useProductsData.ts`
+
+Both hooks return normalized `{ data, isLoading, error }` style state for page components.
+
+### Accordion UI state
+
+- `components/organisms/Accordion/store/useAccordionStore.ts`
+- Used by `components/molecules/AccordionItem.tsx`
+- Keeps open item id and toggle action in one place for consistent accordion behavior
+
+## Styling
+
+- `src/index.css` contains global tokens, base elements, and global layout primitives only.
+- Component/feature styles are co-located (`*.css` next to `*.tsx`).
+- BEM is mandatory for all component/feature CSS classes (`block__element--modifier`).
 
 ## Quality Architecture
 
-Automated quality is enforced outside the component tree: oxlint, ESLint (incl. security rules), `audit-ci`, axe against the dev server, Vitest, Playwright, and Husky running `precommit:verify`. **Commands, failure handling, and CI order** live in [../quality/QUALITY_GATES.md](../quality/QUALITY_GATES.md) so this file does not duplicate that reference.
+Quality gates and test orchestration are script-driven from `package.json` and enforced by Husky and CI.
 
-## Common Rationalizations
-
-| Rationalization                              | Reality                                                                                        |
-| -------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| Ill put API calls in the organism for speed. | Bloats reuse and testing; templates/hooks should own data wiring.                              |
-| Global store for everything.                 | Prefer local state when only one subtree cares; Zustand here is for shared accordion UI state. |
-| Atomic layers are bureaucracy.               | They keep PRs scoped and tests targetable; skip layers only with team agreement.               |
-| Docs will stay in sync automatically.        | They wont update this file when flow or paths change.                                          |
+- Static checks: TypeScript, ESLint, oxlint, dead code, size
+- Security/a11y: ESLint security rules, dependency audit, axe
+- Tests: Vitest and Playwright
+- CI deploy: quality-gated GitHub Pages
 
 ## Red Flags
 
-- Business logic **deep in atoms** (hard to test, wrong reuse boundary).
-- SWR keys or fetchers **duplicated** across templates without a shared hook.
-- Store shape **exported** everywhere instead of narrow selectors/actions.
-- Circular imports between component layers.
-- This documents paths **dont exist** in the tree (stale architecture doc).
+- New feature added without route/nav update when discoverability is expected
+- Feature types added under `src/types` when they are only used by one feature
+- Hardcoded API URLs inside hooks/components
+- Styling added to `index.css` for component-specific rules
+- Docs referencing deleted paths or legacy JS files
+- Feature/component removed in code but still present in route/nav/docs/tests
 
 ## Verification
 
-After structural or flow changes:
+After structural changes:
 
-- [ ] Rendering flow above matches actual import/render chain.
-- [ ] Data source and hook names match repo files.
-- [ ] New components sit in the correct Atomic layer.
-- [ ] Quality pipeline still matches [../quality/QUALITY_GATES.md](../quality/QUALITY_GATES.md) and `package.json` / Husky.
+- [ ] `npm run check:all` passes
+- [ ] `npm run test:all` passes
+- [ ] Routes/pages in this doc match `src/app/App.tsx`
+- [ ] Type ownership rules still hold (feature-local vs shared)
+- [ ] New/updated components are placed in the correct Atomic layer

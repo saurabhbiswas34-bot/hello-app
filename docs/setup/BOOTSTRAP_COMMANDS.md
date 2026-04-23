@@ -25,7 +25,7 @@ npm install
 ## Runtime dependencies
 
 ```bash
-npm install swr zustand
+npm install swr zustand react-router-dom
 ```
 
 ## Dev dependencies
@@ -61,6 +61,16 @@ Paste from [reference.md](../../.cursor/skills/react-quality-starter/reference.m
 - `package.json` `scripts` block
 - `vite.config.ts`, `eslint.config.js`, `playwright.config.ts`, `tsconfig.json`
 - `scripts/run-axe-check.mjs`, `scripts/run-zap-baseline.mjs`, `scripts/run-lighthouse.mjs`, `src/test/setupTests.ts`, `.husky/pre-commit`, `.husky/pre-push`
+
+## App structure conventions
+
+- `src/app` holds router and shell (`App.tsx`, `AppShell.tsx`).
+- `src/features/<feature>` holds page, hooks, css, and feature-owned types.
+- `src/components` holds reusable atoms/molecules/organisms.
+- `src/config/api.ts` owns API base URL and endpoints.
+- `src/index.css` stays global-only; component/feature styles are co-located.
+- BEM is mandatory for all component/feature CSS (`block__element--modifier`).
+- TypeScript is mandatory for app code (`.tsx` / `.ts`); do not add `.jsx` / `.js`.
 
 ## Add CI/CD workflow (GitHub Actions)
 

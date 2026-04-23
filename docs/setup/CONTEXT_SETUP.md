@@ -5,6 +5,10 @@
 This is the **long-form setup narrative** for recreating this project's toolchain: Vite React, Atomic Design layout, Zustand + SWR, oxlint/ESLint/security audit, axe, Vitest, Playwright, Husky hooks, and GitHub Actions CI/CD + Pages deploy. It mirrors what the [react-quality-starter](../../.cursor/skills/react-quality-starter/SKILL.md) skill automates.
 
 **Shorter command-only list:** [BOOTSTRAP_COMMANDS.md](BOOTSTRAP_COMMANDS.md). **Copy-paste configs (single source for agents):** [.cursor/skills/react-quality-starter/reference.md](../../.cursor/skills/react-quality-starter/reference.md).
+Implementation conventions:
+
+- [../conventions/COMPONENT_GUIDE.md](../conventions/COMPONENT_GUIDE.md)
+- [../conventions/FEATURE_GUIDE.md](../conventions/FEATURE_GUIDE.md)
 
 ## When to Use This Doc
 
@@ -30,11 +34,12 @@ Use another directory name if you prefer; keep commands consistent afterward.
 ## 2) Add app dependencies
 
 ```bash
-npm install swr zustand
+npm install swr zustand react-router-dom
 ```
 
 - **Zustand:** global UI state (e.g. accordion `openItemId`).
 - **SWR:** data fetching and cache for template-level loading/error/success.
+- **React Router DOM:** route-level feature navigation (`BrowserRouter`, `Routes`, `Route`, `NavLink`).
 
 ## 3) Add quality, security, and testing dependencies
 
@@ -61,18 +66,29 @@ npx browser-driver-manager install chrome@146
 
 Adjust Chrome major if your team standardizes a different version; then align any path logic in `scripts/run-axe-check.mjs`.
 
-## 4) Suggested project structure (Atomic Design + tests)
+## 4) Suggested project structure (current pattern)
 
 ```text
 src/
+  app/
+    App.tsx
+    AppShell.tsx
   components/
     atoms/
     molecules/
     organisms/
-    templates/
-  data/
-  hooks/
-  store/
+  config/
+    api.ts
+  features/
+    home/
+    users/
+      hooks/
+      types/
+    products/
+      hooks/
+      types/
+  types/
+    accordion.ts
   test/
 tests/
   e2e/
@@ -132,7 +148,20 @@ git init
 npm run prepare
 ```
 
-## 12) Commands to verify all
+## 12) Route and feature conventions (important)
+
+- Use `react-router-dom` routes from `src/app/App.tsx`.
+- Prefer route-level lazy loading for feature pages:
+  - `const Home = lazy(() => import('../features/home/Home'))`
+  - Wrap route elements with `Suspense`.
+- Keep feature-owned types inside each feature (`features/<name>/types/*`).
+- Keep API URLs centralized in `src/config/api.ts` and driven by `VITE_API_BASE_URL`.
+- Keep component/feature CSS co-located (`Component.tsx` + `Component.css`).
+- BEM is mandatory for all component/feature CSS (`block__element--modifier`).
+- TypeScript is mandatory for app code (`.tsx` / `.ts`); do not add `.jsx` / `.js` files.
+- Keep `src/index.css` for global foundation only (tokens/base/root).
+
+## 13) Commands to verify all
 
 ```bash
 npm run test:unit
@@ -142,7 +171,7 @@ npm run check:ci
 npm run precommit:verify
 ```
 
-## 13) What this setup gives you
+## 14) What this setup gives you
 
 - Atomic Design-oriented components
 - Zustand + SWR with a clear template/hook boundary
@@ -150,6 +179,7 @@ npm run precommit:verify
 - Accessibility scan via axe
 - Unit + E2E tests
 - Pre-commit parity with full verification
+- Route-level chunk splitting ready architecture
 
 ## Common Rationalizations
 

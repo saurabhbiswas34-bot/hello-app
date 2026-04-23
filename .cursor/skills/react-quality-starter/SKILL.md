@@ -9,6 +9,17 @@ description: Creates a Vite React starter with Atomic Design folders, Zustand st
 
 This skill encodes a bootstrap workflow and a feature-change workflow for a Vite + React app with a consistent folder model, layered quality gates (lint, oxlint, security ESLint, dependency audit, axe, deadcode, bundle-size), automated tests (Vitest, Playwright), Husky hooks, and CI/CD deployment guidance. The outcome is a repo where "green locally" means the same bar you want before merge.
 
+Current preferred architecture in this repo:
+
+- app shell + route pages (`src/app/App.tsx`, `src/app/AppShell.tsx`)
+- route-level lazy loading (`React.lazy` + `Suspense`)
+- feature-first folders (`src/features/<name>`)
+- feature-owned types in feature folders
+- TypeScript-only React code (`.tsx` for components/pages, `.ts` for modules)
+- co-located CSS per component/feature
+- BEM is mandatory for all component/feature CSS (`block__element--modifier`)
+- API endpoints centralized in `src/config/api.ts`
+
 **Progressive disclosure:** Use this file for process and gates. Copy-paste configs and scripts live in [reference.md](reference.md). Prompt-to-outcome examples live in [examples.md](examples.md).
 
 ## When to Use
@@ -27,7 +38,7 @@ This skill encodes a bootstrap workflow and a feature-change workflow for a Vite
 
 ## Core Behaviors (non-negotiable)
 
-1. **Classify the task first** (see Phase 0). Announce the classification - bootstrap, adopt-tooling, feature-addition, or feature-modification - in one sentence before writing code. If ambiguous, ask.
+1. **Classify the task first** (see Phase 0). Announce the classification - bootstrap, adopt-tooling, feature-addition, feature-modification, feature-removal, component-addition, component-modification, or component-removal - in one sentence before writing code. If ambiguous, ask.
 2. **Surface assumptions** before large edits - Node/npm present, app name/path, port 5173 available, Windows vs Unix for axe Chrome paths (see [reference.md](reference.md) for the Windows-oriented script).
 3. **Stop on confusion** - if `package.json` already has conflicting scripts or ESLint flat config differs, name the conflict and resolve before pasting duplicate blocks.
 4. **Scope discipline** - add only the tooling and files this stack needs; do not refactor unrelated features or delete code you do not own. Existing features are **canon**, not dead code.
@@ -40,20 +51,24 @@ Work in **increments** that keep the project installable and runnable after each
 
 ### Phase 0 - Classify the task (do this FIRST, always)
 
-Before touching anything, determine which of the four task types applies by inspecting the repo and the user's intent:
+Before touching anything, determine which task type applies by inspecting the repo and the user's intent:
 
-| Task type                           | Signals                                                                                                                                  | What to do                                                                                                                                                                                                                                                             |
-| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Bootstrap (new project)**         | No `package.json`, empty dir, or user says "create / start / bootstrap".                                                                 | Run Phases 1-6 in full.                                                                                                                                                                                                                                                |
-| **Adopt tooling into existing app** | `package.json` exists, Vite+React present, but quality gates missing. User says "add gates / add testing / add pre-commit".              | Run Phases 2, 4, 5 only. Do NOT touch features.                                                                                                                                                                                                                        |
-| **Feature addition**                | Stack already present. User says "add a X" / "create a Y" / "build a Z". An app entry (`App.tsx` / `App.jsx`) already renders something. | **Add alongside** the existing feature(s). Provide navigation (tabs, hash routes, or links) so both coexist. Do NOT replace the current app render target. Do NOT delete or orphan existing components, hooks, stores, CSS. Treat everything already on disk as canon. |
-| **Feature modification**            | User names an existing feature and asks to change its behavior.                                                                          | Edit in place. No replacement, no parallel mount.                                                                                                                                                                                                                      |
+| Task type                           | Signals                                                                                                                     | What to do                                                                                                        |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| **Bootstrap (new project)**         | No `package.json`, empty dir, or user says "create / start / bootstrap".                                                    | Run Phases 1-6 in full.                                                                                           |
+| **Adopt tooling into existing app** | `package.json` exists, Vite+React present, but quality gates missing. User says "add gates / add testing / add pre-commit". | Run Phases 2, 4, 5 only. Do NOT touch features.                                                                   |
+| **Feature addition**                | User says "add feature/page/route".                                                                                         | Add alongside existing features with navigation/route updates.                                                    |
+| **Feature modification**            | User names an existing feature and asks to change behavior.                                                                 | Edit in place; keep route and contracts stable unless explicitly requested.                                       |
+| **Component addition**              | User asks to create reusable UI piece (`Button`, `Card`, `Navbar`, `AccordionList`).                                        | Place by Atomic layer under `src/components`, co-locate CSS/tests, keep props typed, avoid feature logic leakage. |
+| **Component modification**          | User asks to update/refactor existing reusable UI component.                                                                | Update in place, keep component API stable or document breaking prop changes and update all callers/tests.        |
+| **Component removal**               | User asks to delete a reusable component.                                                                                   | Remove component + CSS/tests + dead exports/imports; verify no runtime references remain.                         |
+| **Feature removal**                 | User asks to delete a route/page/feature.                                                                                   | Remove route/nav entry, feature files, tests/docs references, and any now-orphaned shared code only if unused.    |
 
 **Tie-breakers when the user's request is ambiguous:**
 
 - Default assumption for "add / create / build a X" is **feature addition**, not replacement. If in doubt, ask: _"Should this replace the current home view, or live alongside it with navigation?"_
-- If you are about to change what `App.tsx` / `App.jsx` renders and the task is **not** bootstrap, stop and confirm with the user first.
-- When adding a feature, if the project has no router, default to a minimal no-dep switch (hash route, state flag, or tabbed shell) - do not silently install a router unless asked.
+- If you are about to change what `App.tsx` renders and the task is **not** bootstrap, stop and confirm with the user first.
+- When adding a feature, prefer `react-router-dom` with explicit routes (`BrowserRouter`, `Routes`, `Route`, `NavLink`). Use no-dependency toggles only if the user explicitly asks to avoid router dependencies.
 
 Announce the classification and the coexistence plan in one sentence before writing code. Example: _"Classified as feature addition; I'll mount the new Docs Explorer next to the existing Accordion via a tab in an `AppShell` template."_
 
@@ -70,7 +85,16 @@ Announce the classification and the coexistence plan in one sentence before writ
 
 ### Phase 3 - Layout
 
-Create the Atomic Design + support folders (atoms -> templates, `src/data`, `src/hooks`, `src/store`, `src/test`, `tests/e2e`, `scripts`, `.husky`). Skip creating empty dirs if the user forbids them; otherwise prefer the standard tree for discoverability.
+Create a feature-first + reusable-components layout:
+
+- `src/app` for router/shell
+- `src/components/{atoms,molecules,organisms}` for reusable UI
+- `src/features/<feature>/{<Feature>.tsx,hooks,types}`
+- `src/config` for runtime config (`api.ts`)
+- `src/types` only for truly shared contracts
+- `src/test`, `tests/e2e`, `scripts`, `.husky`
+
+Prefer co-located styles (`Component.tsx` + `Component.css`) and keep `src/index.css` global-only.
 
 ### Phase 4 - Config and scripts
 
@@ -89,9 +113,9 @@ Create the Atomic Design + support folders (atoms -> templates, `src/data`, `src
 
 - Optional but typical: one SWR-based data hook, Zustand slice, and a small UI flow so unit + E2E tests have a real target. Keep sample code **minimal** and aligned with project naming.
 
-### Phase 7 - Feature work (addition / modification only)
+### Phase 7 - Change work (feature/component)
 
-Only when the classification is **feature-addition** or **feature-modification**:
+Only when the classification is **feature-addition**, **feature-modification**, **feature-removal**, **component-addition**, **component-modification**, or **component-removal**:
 
 1. **Read `docs/architecture/ARCHITECTURE.md` before coding.** If your change will alter the rendering flow, data source, or top-level App mount, plan the doc update in the same change - that doc's own Red Flags call out staleness as a defect.
 2. **Feature addition implies coexistence.** The default mental model is: there is already a feature at the home route; you are adding a sibling feature. Provide navigation. Never replace the app render target silently.
@@ -99,7 +123,29 @@ Only when the classification is **feature-addition** or **feature-modification**
 4. **Adding a dependency:** State the bundle-size delta and run `npm run check:size`. Justify anything heavy (markdown parsers, date libs, UI kits). Prefer native HTML and existing deps first.
 5. **Custom interactive widgets:** Custom tree / tabs / menu / combobox need a documented keyboard plan (arrow keys, Home/End, Enter) and the correct ARIA composite roles (`role="tree"` -> `role="treeitem"` children, `role="tablist"` -> `role="tab"` + `role="tabpanel"`, etc.). Prefer native HTML equivalents when the semantics fit.
 6. **One data source per concern:** A component should not read the same state from both props and store for the same concept.
-7. **Content-folder globs:** `import.meta.glob({ eager: true, query: '?raw' })` is fine for tens of files; plan lazy loading before 50+ files. Note the trade-off to the user when you use it.
+7. **No hardcoded endpoints:** API URLs must come from config (for example `src/config/api.ts`) and env (`VITE_API_BASE_URL` fallback model).
+8. **Types ownership:** Feature-only types belong in `features/<name>/types`; shared cross-feature types belong in `src/types`.
+9. **Component placement by Atomic Design:**
+   - atoms: smallest primitives, no feature-specific fetching/store logic
+   - molecules: small compositions of atoms
+   - organisms: feature-level reusable compositions
+   - page/route wiring stays in `src/features` and `src/app`, not inside shared atoms/molecules
+10. **Co-located styling/tests:** for component changes, keep `Component.tsx`, `Component.css`, and `Component.test.tsx` together where practical.
+11. **BEM is mandatory:** all new or modified CSS must follow `block__element--modifier` naming.
+12. **TypeScript is mandatory:** new/updated React app code must use `.tsx` / `.ts`; do not add `.jsx` / `.js` feature/component files.
+13. **Content-folder globs:** `import.meta.glob({ eager: true, query: '?raw' })` is fine for tens of files; plan lazy loading before 50+ files. Note the trade-off to the user when you use it.
+
+### Phase 7A - Removal protocol (feature/component)
+
+When removing a feature or component:
+
+1. Remove **all references first** (imports, routes, nav items, tests, CSS imports).
+2. Remove files only after reference cleanup.
+3. Update docs in the same change:
+   - `docs/architecture/ARCHITECTURE.md`
+   - setup/testing docs if commands/flows changed
+   - skill examples/reference if conventions changed
+4. Re-run typecheck/lint/tests and deadcode checks to ensure no orphans.
 
 ### Phase 8 - Observability, CI, and reporting (all task types)
 
@@ -168,7 +214,7 @@ Do not mark the task complete until **all** apply:
 
 - [ ] New repo: `git init` done if needed; `npm run prepare` run; `.husky/pre-commit` exists and is executable where relevant.
 
-### Feature addition or modification (additional gates)
+### Feature or component changes (additional gates)
 
 - [ ] Classification was announced to the user and confirmed (explicitly or implicitly).
 - [ ] Existing features still render, still pass their tests, still have their routes / navigation entries.
@@ -176,6 +222,10 @@ Do not mark the task complete until **all** apply:
 - [ ] If a new dependency was added: bundle-size delta stated; `npm run check:size` passes.
 - [ ] Custom interactive widgets have a documented keyboard plan and ARIA composite roles in place, or use native HTML equivalents.
 - [ ] No orphaned files: `npm run check:deadcode` passes (or the agent has flagged intentional exceptions to the user).
+- [ ] For component changes, Atomic layer choice is explicit and CSS/tests are co-located.
+- [ ] For component/feature styling changes, BEM is followed (`block__element--modifier`).
+- [ ] New/updated app code uses TypeScript (`.tsx` / `.ts`) with no new `.jsx` / `.js` files.
+- [ ] For removals, route/nav/test/docs references are removed and verified.
 
 ## Output Rules
 
@@ -195,3 +245,5 @@ npm run precommit:verify   # everything the hook runs
 
 - [examples.md](examples.md) - prompts and expected outcomes.
 - [reference.md](reference.md) - full `vite.config`, ESLint, Playwright, axe script, `package.json` scripts, Husky snippet.
+- Project component conventions: `docs/conventions/COMPONENT_GUIDE.md`
+- Project feature conventions: `docs/conventions/FEATURE_GUIDE.md`

@@ -29,6 +29,7 @@ Quality in this repo is **layered**: fast static checks, accessibility, security
 | `npm run check:dast`       | ZAP + Lighthouse DAST sequence                                                                        |
 | `npm run check:ci`         | `check:all` + `test:all` + `check:dast`                                                               |
 | `npm run precommit:verify` | Project-defined pre-commit verification                                                               |
+| `npm run prepush:verify`   | Fast pre-push guard (`lint` + `test:unit:changed`)                                                    |
 
 **Implicit pieces:** `check:vuln` is `audit-ci --moderate`; `check:security` runs `npm run lint` then `check:vuln`.
 
@@ -57,6 +58,12 @@ Quality in this repo is **layered**: fast static checks, accessibility, security
 3. `npm run test:all`
 4. `npm run check:dast`
 5. On protected branch push: deploy GitHub Pages from built `dist/`.
+
+## Local Hook Scopes
+
+- `precommit:verify` should stay fast for staged files.
+- `prepush:verify` can remain lightweight if CI still enforces full `check:all` + `test:all` + DAST.
+- CI is the final quality authority for merge/deploy decisions.
 
 Pages deploy is gated behind successful quality checks and should run only on push (not pull request).
 

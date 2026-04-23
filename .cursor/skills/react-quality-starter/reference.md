@@ -7,7 +7,7 @@ Copy-paste templates for this starter setup.
 Runtime:
 
 ```bash
-npm install swr zustand
+npm install swr zustand react-router-dom
 ```
 
 Dev (tooling + gates):
@@ -229,12 +229,75 @@ process.exit(result.status ?? 1)
 ```json
 {
   "$schema": "https://unpkg.com/knip@latest/schema.json",
-  "entry": ["src/main.tsx", "src/App.tsx"],
+  "entry": ["src/app/main.tsx", "src/app/App.tsx"],
   "project": ["src/**/*.{ts,tsx}"],
   "ignore": ["dist/**", "test-results/**"],
   "ignoreDependencies": ["@size-limit/preset-app"]
 }
 ```
+
+## Feature conventions
+
+Use this default for new feature work:
+
+```text
+src/features/<feature>/
+  <Feature>.tsx
+  <Feature>.css
+  hooks/
+  types/
+```
+
+- Feature-only types stay in `features/<feature>/types`.
+- Shared cross-feature types stay in `src/types`.
+- API endpoints are centralized in `src/config/api.ts` with env fallback (`VITE_API_BASE_URL`).
+- BEM is mandatory for feature CSS (`block__element--modifier`).
+- TypeScript is mandatory for feature code (`.tsx` for components/pages, `.ts` for modules).
+
+## Component conventions (Atomic Design)
+
+```text
+src/components/
+  atoms/
+    <Name>.tsx
+    <Name>.css
+    <Name>.test.tsx
+  molecules/
+    <Name>.tsx
+    <Name>.css
+    <Name>.test.tsx
+  organisms/
+    <Name>/
+      <Name>.tsx
+      <Name>.css
+      <Name>.test.tsx
+```
+
+Rules:
+
+- Do not put feature page wiring or fetch logic in atoms.
+- Keep component APIs typed and stable.
+- If component props change, update all callers and tests in the same change.
+- BEM is mandatory for component CSS (`block__element--modifier`).
+- TypeScript is mandatory for component code (`.tsx`/`.ts`), no new `.jsx`/`.js`.
+
+## Removal checklists
+
+### Component removal checklist
+
+- Remove component file(s), CSS, and tests.
+- Remove all imports/usages in callers.
+- Remove barrel exports/index exports if present.
+- Run `tsc`, `eslint`, and impacted tests.
+- Update docs/examples if the component was part of documented patterns.
+
+### Feature removal checklist
+
+- Remove route entry from `src/app/App.tsx`.
+- Remove nav links or UI entry points (for example `Navbar` items).
+- Remove feature folder and feature tests.
+- Remove now-unused shared code only after verifying no references remain.
+- Update architecture/testing docs to reflect current route set.
 
 > **Note on `check:size`:** the 250 KB budget is a starter value; bump it consciously when a heavy dep is justified and state the new number in the PR description.
 >
