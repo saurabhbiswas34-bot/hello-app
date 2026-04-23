@@ -22,6 +22,26 @@ const getLatestVersionDir = (rootPath) => {
   return versions.at(-1) || null
 }
 
+const findBinaryRecursively = (rootPath, fileNames) => {
+  if (!existsSync(rootPath)) return null
+  const stack = [rootPath]
+  while (stack.length > 0) {
+    const current = stack.pop()
+    const entries = readdirSync(current, { withFileTypes: true })
+    for (const entry of entries) {
+      const fullPath = join(current, entry.name)
+      if (entry.isDirectory()) {
+        stack.push(fullPath)
+        continue
+      }
+      if (fileNames.includes(entry.name)) {
+        return fullPath
+      }
+    }
+  }
+  return null
+}
+
 const chromeDirName = getLatestVersionDir(chromeRoot)
 
 if (!chromeDirName) {
@@ -31,18 +51,29 @@ if (!chromeDirName) {
   process.exit(1)
 }
 
-const chromePath = join(chromeRoot, chromeDirName, 'chrome-win64', 'chrome.exe')
-const chromedriverPath = join(
-  driverRoot,
-  chromeDirName,
-  'chromedriver-win64',
-  'chromedriver.exe'
-)
+const chromePath = findBinaryRecursively(join(chromeRoot, chromeDirName), [
+  'chrome.exe',
+  'chrome',
+])
 
-if (!existsSync(chromePath) || !existsSync(chromedriverPath)) {
+const chromedriverPath = findBinaryRecursively(join(driverRoot, chromeDirName), [
+  'chromedriver.exe',
+  'chromedriver',
+])
+
+if (
+  !chromePath ||
+  !chromedriverPath ||
+  !existsSync(chromePath) ||
+  !existsSync(chromedriverPath)
+) {
   console.error(
     'Chrome or ChromeDriver binary not found for install:',
-    chromeDirName
+    chromeDirName,
+    '\nResolved chromePath:',
+    chromePath,
+    '\nResolved chromedriverPath:',
+    chromedriverPath
   )
   process.exit(1)
 }
@@ -56,6 +87,8 @@ const result = spawnSync(
     chromePath,
     '--chromedriver-path',
     chromedriverPath,
+    '--chrome-options',
+    'no-sandbox,disable-dev-shm-usage,headless=new',
     '--dir',
     outputDir,
     '--save',
