@@ -16,7 +16,7 @@
     "lint:report:html": "eslint . -f html -o reports/lint/eslint.html",
     "check:oxlint": "oxlint . > reports/lint/oxlint.txt",
     "check:axe": "start-server-and-test \"npm run dev -- --host localhost --port 5173\" http://localhost:5173 \"node scripts/run-axe-check.mjs && node scripts/render-axe-report.mjs\"",
-    "check:vuln": "audit-ci --moderate --output-format json --report-type full > reports/deps/audit-ci.json",
+    "check:vuln": "node -e \"require('node:fs').mkdirSync('reports/deps',{recursive:true})\" && audit-ci --moderate --output-format json --report-type full > reports/deps/audit-ci.json",
     "check:security": "npm run lint && npm run check:vuln",
     "check:deadcode": "knip --production --reporter json > reports/lint/knip.json",
     "check:size": "npm run build && size-limit --json > reports/size/size-limit.json",
