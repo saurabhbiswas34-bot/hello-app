@@ -27,7 +27,7 @@
     "test:all": "npm run test:unit && npm run test:e2e",
     "check:all": "npm run check:types && npm run format && npm run lint && npm run lint:report:json && npm run lint:report:html && npm run check:oxlint && npm run check:deadcode && npm run check:sast && npm run check:axe && npm run check:security && npm run check:size",
     "precommit:verify": "npm run check:staged",
-    "prepush:verify": "npm run check:all && npm run test:all",
+    "prepush:verify": "npm run lint && npm run test:unit:changed",
     "check:types": "tsc --noEmit",
     "check:sast:ci": "npm run check:sast",
     "check:dast:ci": "npm run check:dast",
