@@ -22,6 +22,8 @@ const url = process.env.DAST_TARGET_URL || 'http://host.docker.internal:5173'
 const args = [
   'run',
   '--rm',
+  '--user',
+  '0:0',
   '--add-host',
   'host.docker.internal:host-gateway',
   '-v',
