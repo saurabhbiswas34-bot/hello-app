@@ -24,3 +24,18 @@ dist-ssr
 *.sw?
 test-results/
 playwright-report/
+
+# Quality / test / SAST / DAST report artifacts — keep folder skeleton only
+reports/**/*
+!reports/
+!reports/**/
+!reports/**/.gitkeep
+
+# Coverage (Vitest)
+coverage/
+
+# Prettier cache
+.prettier-cache
+
+# Stryker mutation testing (Phase 3)
+.stryker-tmp/

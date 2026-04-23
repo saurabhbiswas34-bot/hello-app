@@ -1,6 +1,21 @@
 # React Project Context Setup
 
-This file captures the full command flow and setup used in this project so you can recreate a similar starter quickly.
+## Overview
+
+This is the **long-form setup narrative** for recreating this project's toolchain: Vite React, Atomic Design layout, Zustand + SWR, oxlint/ESLint/security audit, axe, Vitest, Playwright, Husky hooks, and GitHub Actions CI/CD + Pages deploy. It mirrors what the [react-quality-starter](../../.cursor/skills/react-quality-starter/SKILL.md) skill automates.
+
+**Shorter command-only list:** [BOOTSTRAP_COMMANDS.md](BOOTSTRAP_COMMANDS.md). **Copy-paste configs (single source for agents):** [.cursor/skills/react-quality-starter/reference.md](../../.cursor/skills/react-quality-starter/reference.md).
+
+## When to Use This Doc
+
+- Onboarding: understand _why_ each step exists and in what order.
+- Debugging a broken local setup (compare your tree and scripts to the numbered sections).
+- Extending the stack (add a step explicitly; do not orphan new tools from `precommit:verify` or CI).
+
+## When NOT to Use This Doc Alone
+
+- **macOS/Linux axe paths** - `reference.md`'s `run-axe-check.mjs` may use Windows paths; adjust for your OS and document the change.
+- **Policy** (audit severity, CI matrix) - team decides; this doc describes the current hello-app defaults.
 
 ## 1) Create project
 
@@ -10,40 +25,43 @@ cd hello-app
 npm install
 ```
 
+Use another directory name if you prefer; keep commands consistent afterward.
+
 ## 2) Add app dependencies
 
 ```bash
 npm install swr zustand
 ```
 
-Used for:
-- `zustand`: accordion state management
-- `swr`: mock data fetching/caching flow
+- **Zustand:** global UI state (e.g. accordion `openItemId`).
+- **SWR:** data fetching and cache for template-level loading/error/success.
 
 ## 3) Add quality, security, and testing dependencies
 
 ```bash
 npm install -D oxlint @axe-core/cli browser-driver-manager audit-ci eslint-plugin-security
+npm install -D eslint-plugin-jsx-a11y knip size-limit @size-limit/preset-app
+npm install -D prettier lint-staged lighthouse
 npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom
-npm install -D @playwright/test start-server-and-test
-npm install -D husky
+npm install -D @playwright/test start-server-and-test husky
+npm install -D typescript typescript-eslint @vitest/coverage-v8 @vitest/ui
 ```
 
-Install Playwright browser:
+**Playwright browser:**
 
 ```bash
 npx playwright install chromium
 ```
 
-Install synced Chrome + ChromeDriver for axe:
+**Synced Chrome + ChromeDriver for axe CLI:**
 
 ```bash
 npx browser-driver-manager install chrome@146
 ```
 
-## 4) Suggested project structure (Atomic Design + test setup)
+Adjust Chrome major if your team standardizes a different version; then align any path logic in `scripts/run-axe-check.mjs`.
 
-Create these folders/files:
+## 4) Suggested project structure (Atomic Design + tests)
 
 ```text
 src/
@@ -64,105 +82,97 @@ scripts/
 
 ## 5) Scripts to add in `package.json`
 
-```json
-{
-  "scripts": {
-    "dev": "vite",
-    "dev:reset": "npx kill-port 5173 && vite --host localhost --port 5173 --open",
-    "build": "vite build",
-    "lint": "eslint .",
-    "prepare": "husky",
-    "preview": "vite preview",
-    "test:unit": "vitest run",
-    "test:e2e": "playwright test",
-    "test:all": "npm run test:unit && npm run test:e2e",
-    "check:oxlint": "oxlint .",
-    "check:axe": "start-server-and-test \"npm run dev -- --host localhost --port 5173\" http://localhost:5173 \"node scripts/run-axe-check.mjs\"",
-    "check:vuln": "audit-ci --moderate",
-    "check:security": "npm run lint && npm run check:vuln",
-    "check:all": "npm run check:oxlint && npm run check:axe && npm run check:security",
-    "precommit:verify": "npm run check:all && npm run test:all"
-  }
-}
-```
+See the scripts block in [reference.md](../../.cursor/skills/react-quality-starter/reference.md). Critical names: `check:oxlint`, `check:axe`, `check:vuln`, `check:security`, `check:all`, `test:unit`, `test:e2e`, `test:all`, `precommit:verify`, `prepare`.
 
-## 6) ESLint security plugin setup
+## 6) ESLint security plugin
 
-In `eslint.config.js`, add:
-- import: `eslint-plugin-security`
-- extend: `pluginSecurity.configs.recommended`
-- vitest globals for `src/**/*.test.{js,jsx}`
+In `eslint.config.js`: import `eslint-plugin-security`, extend recommended, add Vitest globals for `src/**/*.test.{ts,tsx}`. Full file: [reference.md](../../.cursor/skills/react-quality-starter/reference.md).
 
 ## 7) Vitest setup
 
-In `vite.config.js`:
-- `test.environment = "jsdom"`
-- `test.setupFiles = "./src/test/setupTests.js"`
-- `test.globals = true`
-- `test.include = ["src/**/*.test.{js,jsx}"]`
-
-In `src/test/setupTests.js`:
-
-```js
-import '@testing-library/jest-dom'
-```
+In `vite.config.ts`: `test.environment`, `setupFiles`, `globals`, `include`. In `src/test/setupTests.ts`: `@testing-library/jest-dom`. Full snippets: [reference.md](../../.cursor/skills/react-quality-starter/reference.md).
 
 ## 8) Playwright setup
 
-Create `playwright.config.js` with:
-- `testDir: "./tests/e2e"`
-- `baseURL: "http://localhost:5173"`
-- `webServer.command: "npm run dev -- --host localhost --port 5173"`
-- `webServer.reuseExistingServer: true`
+`playwright.config.ts`: `testDir`, `baseURL`, `webServer` on port `5173`, `reuseExistingServer`. Full file: [reference.md](../../.cursor/skills/react-quality-starter/reference.md).
 
 ## 9) Axe helper script
 
-Create `scripts/run-axe-check.mjs` to:
-- detect installed browser-driver-manager Chrome/Driver paths
-- run:
+`scripts/run-axe-check.mjs` resolves browser-driver-manager Chrome/ChromeDriver and runs axe against `http://localhost:5173`. Full script: [reference.md](../../.cursor/skills/react-quality-starter/reference.md).
 
-```bash
-npx axe http://localhost:5173 --chrome-path "<...>" --chromedriver-path "<...>"
-```
+## 10) CI/CD and GitHub Pages
 
-## 10) Husky pre-commit hook
+This repo's workflow is `.github/workflows/ci-cd.yml`:
 
-Create `.husky/pre-commit`:
+- `quality` job runs `npm run check:all`, `npm run test:all`, then DAST (`check:dast:zap`, `check:dast:lighthouse`).
+- `DAST_TARGET_URL` is set only for ZAP (`http://host.docker.internal:5173`).
+- Artifacts are uploaded from `reports/` and `dist/`.
+- `deploy-pages` runs only after quality passes on push to `main` or `master`.
+- Pages build uses `VITE_BASE_PATH=/${{ github.event.repository.name }}/`.
+
+## 11) Husky pre-commit
+
+`.husky/pre-commit`:
 
 ```sh
 #!/usr/bin/env sh
 npm run precommit:verify
 ```
 
-Then initialize hooks:
+Then:
 
 ```bash
 npm run prepare
 ```
 
-If repo is new:
+New repo:
 
 ```bash
 git init
 npm run prepare
 ```
 
-## 11) Commands to verify all
+## 12) Commands to verify all
 
 ```bash
 npm run test:unit
 npm run test:e2e
 npm run check:all
+npm run check:ci
 npm run precommit:verify
 ```
 
-## 12) What this setup gives you
+## 13) What this setup gives you
 
-- Atomic Design-based component organization
-- Global state with Zustand
-- Data fetching with SWR (mock-ready, API-ready)
-- Code lint + security lint + dependency vulnerability audit
-- Accessibility scan with axe-core CLI
-- Unit tests with Vitest + Testing Library
-- E2E tests with Playwright
-- Pre-commit gate that runs all checks and tests
+- Atomic Design-oriented components
+- Zustand + SWR with a clear template/hook boundary
+- Lint + security lint + vulnerability audit
+- Accessibility scan via axe
+- Unit + E2E tests
+- Pre-commit parity with full verification
+
+## Common Rationalizations
+
+| Rationalization                                         | Reality                                                                           |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| I'll skip browser-driver-manager and use system Chrome. | Then `run-axe-check.mjs` must be updated; do not leave a half-migrated script.    |
+| I'll paste scripts from an old gist.                    | Drift breaks pre-commit; use `reference.md` as canonical.                         |
+| Husky optional for solo dev.                            | You lose the main enforcement story; at least run `precommit:verify` before push. |
+| I'll use a different port everywhere.                   | Update Playwright, `check:axe`, and dev commands together.                        |
+
+## Red Flags
+
+- `prepare` / Husky not run after clone -> hooks never fire.
+- Playwright `baseURL` and dev server URL **out of sync**.
+- Axe script points to **wrong OS** binary paths.
+- `precommit:verify` missing from hook while developers think they are protected.
+
+## Verification
+
+Setup is complete when:
+
+- [ ] `npm run check:all` passes.
+- [ ] `npm run test:all` passes.
+- [ ] `npm run precommit:verify` passes.
+- [ ] `.husky/pre-commit` exists and runs `npm run precommit:verify`.
+- [ ] `reference.md` snippets match this repo's actual config files (or differences are documented in the repo).

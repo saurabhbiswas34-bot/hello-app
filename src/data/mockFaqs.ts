@@ -1,4 +1,6 @@
-const mockFaqs = [
+import type { FaqItem } from '../types/faq'
+
+const mockFaqs: FaqItem[] = [
   {
     id: 'item-1',
     title: 'What is Atomic Design?',
@@ -25,7 +27,7 @@ const mockFaqs = [
   },
 ]
 
-export const fetchMockFaqs = async () => {
+export const fetchMockFaqs = async (): Promise<FaqItem[]> => {
   await new Promise((resolve) => setTimeout(resolve, 350))
   return mockFaqs
 }

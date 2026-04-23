@@ -1,6 +1,11 @@
 import useAccordionStore from '../../store/useAccordionStore'
+import type { FaqItem } from '../../types/faq'
 
-function AccordionItem({ item }) {
+interface AccordionItemProps {
+  item: FaqItem
+}
+
+function AccordionItem({ item }: AccordionItemProps) {
   const openItemId = useAccordionStore((state) => state.openItemId)
   const toggleItem = useAccordionStore((state) => state.toggleItem)
   const isOpen = openItemId === item.id

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "entry": ["src/main.tsx", "src/App.tsx"],
+  "project": ["src/**/*.{ts,tsx}"],
+  "ignore": ["dist/**", "test-results/**", "reports/**"],
+  "ignoreDependencies": [
+    "@size-limit/preset-app",
+    "react",
+    "react-dom",
+    "react-markdown",
+    "swr",
+    "zustand"
+  ]
+}

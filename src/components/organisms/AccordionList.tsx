@@ -1,6 +1,11 @@
 import AccordionItem from '../molecules/AccordionItem'
+import type { FaqItem } from '../../types/faq'
 
-function AccordionList({ items }) {
+interface AccordionListProps {
+  items: FaqItem[]
+}
+
+function AccordionList({ items }: AccordionListProps) {
   return (
     <section className="accordion-list" aria-label="FAQ accordion">
       {items.map((item) => (

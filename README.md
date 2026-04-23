@@ -1,16 +1,56 @@
-# React + Vite
+# React Quality Bootstrap Starter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository is a **bootstrap starter for new projects** built with Vite + React + TypeScript and production-style quality gates.
 
-Currently, two official plugins are available:
+Use this as the base when starting a new UI project that needs:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Atomic Design folder structure (`atoms` -> `templates`)
+- Zustand state + SWR data hook patterns
+- Linting, formatting, security checks, dead-code checks, and bundle-size checks
+- Unit tests (Vitest) + E2E tests (Playwright)
+- Accessibility checks (axe)
+- Husky pre-commit and pre-push hooks
+- GitHub Actions CI/CD with GitHub Pages deployment
 
-## React Compiler
+## Quick Start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev
+```
 
-## Expanding the ESLint configuration
+## Verification Commands
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm run check:all
+npm run test:all
+npm run check:ci
+```
+
+## Reports
+
+Quality and test artifacts are generated under:
+
+- `reports/lint`
+- `reports/unit`
+- `reports/e2e`
+- `reports/a11y`
+- `reports/sast`
+- `reports/dast`
+- `reports/deps`
+- `reports/size`
+
+## CI/CD
+
+Workflow: `.github/workflows/ci-cd.yml`
+
+- Runs quality + tests + DAST on pull requests and pushes
+- Deploys to GitHub Pages after successful quality checks on `main` or `master`
+
+## Starter Guidance
+
+For reusable bootstrap guidance and reference configs:
+
+- Skill process guide: `.cursor/skills/react-quality-starter/SKILL.md`
+- Copy-paste reference: `.cursor/skills/react-quality-starter/reference.md`
+- Project setup docs: `docs/setup/CONTEXT_SETUP.md`

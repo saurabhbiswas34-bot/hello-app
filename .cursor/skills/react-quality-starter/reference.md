@@ -2,18 +2,45 @@
 
 Copy-paste templates for this starter setup.
 
-## `vite.config.js`
+## Dependencies
 
-```js
-import { defineConfig } from 'vite'
+Runtime:
+
+```bash
+npm install swr zustand
+```
+
+Dev (tooling + gates):
+
+```bash
+npm install -D oxlint @axe-core/cli browser-driver-manager audit-ci eslint-plugin-security eslint-plugin-jsx-a11y
+npm install -D knip size-limit @size-limit/preset-app
+npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom
+npm install -D @playwright/test start-server-and-test husky
+npm install -D prettier lint-staged lighthouse
+npm install -D typescript typescript-eslint @vitest/coverage-v8 @vitest/ui
+```
+
+One-time binaries:
+
+```bash
+npx playwright install chromium
+npx browser-driver-manager install chrome@146
+```
+
+## `vite.config.ts`
+
+```ts
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
+  base: process.env.VITE_BASE_PATH ?? '/',
   plugins: [react()],
   test: {
-    include: ['src/**/*.test.{js,jsx}'],
+    include: ['src/**/*.test.{ts,tsx}'],
     environment: 'jsdom',
-    setupFiles: './src/test/setupTests.js',
+    setupFiles: './src/test/setupTests.ts',
     globals: true,
   },
 })
@@ -27,17 +54,19 @@ import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import pluginSecurity from 'eslint-plugin-security'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
   globalIgnores(['dist']),
   {
-    files: ['**/*.{js,jsx}'],
+    files: ['**/*.{ts,tsx}'],
     extends: [
       js.configs.recommended,
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
       pluginSecurity.configs.recommended,
+      jsxA11y.flatConfigs.recommended,
     ],
     languageOptions: {
       ecmaVersion: 2020,
@@ -53,7 +82,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['src/**/*.test.{js,jsx}'],
+    files: ['src/**/*.test.{ts,tsx}'],
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -64,9 +93,9 @@ export default defineConfig([
 ])
 ```
 
-## `playwright.config.js`
+## `playwright.config.ts`
 
-```js
+```ts
 import { defineConfig } from '@playwright/test'
 
 export default defineConfig({
@@ -84,9 +113,9 @@ export default defineConfig({
 })
 ```
 
-## `src/test/setupTests.js`
+## `src/test/setupTests.ts`
 
-```js
+```ts
 import '@testing-library/jest-dom'
 ```
 
@@ -114,7 +143,7 @@ const chromeDirName = getLatestVersionDir(chromeRoot)
 
 if (!chromeDirName) {
   console.error(
-    'No browser-driver-manager Chrome install found. Run: npx browser-driver-manager install chrome',
+    'No browser-driver-manager Chrome install found. Run: npx browser-driver-manager install chrome'
   )
   process.exit(1)
 }
@@ -124,11 +153,14 @@ const chromedriverPath = join(
   driverRoot,
   chromeDirName,
   'chromedriver-win64',
-  'chromedriver.exe',
+  'chromedriver.exe'
 )
 
 if (!existsSync(chromePath) || !existsSync(chromedriverPath)) {
-  console.error('Chrome or ChromeDriver binary not found for install:', chromeDirName)
+  console.error(
+    'Chrome or ChromeDriver binary not found for install:',
+    chromeDirName
+  )
   process.exit(1)
 }
 
@@ -142,7 +174,7 @@ const result = spawnSync(
     '--chromedriver-path',
     chromedriverPath,
   ],
-  { stdio: 'inherit', shell: true },
+  { stdio: 'inherit', shell: true }
 )
 
 process.exit(result.status ?? 1)
@@ -159,22 +191,74 @@ process.exit(result.status ?? 1)
     "lint": "eslint .",
     "prepare": "husky",
     "preview": "vite preview",
-    "test:unit": "vitest run",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "test:unit": "vitest run --coverage",
     "test:e2e": "playwright test",
     "test:all": "npm run test:unit && npm run test:e2e",
-    "check:oxlint": "oxlint .",
-    "check:axe": "start-server-and-test \"npm run dev -- --host localhost --port 5173\" http://localhost:5173 \"node scripts/run-axe-check.mjs\"",
-    "check:vuln": "audit-ci --moderate",
+    "check:oxlint": "oxlint . > reports/lint/oxlint.txt",
+    "lint:report:json": "eslint . -f json -o reports/lint/eslint.json",
+    "lint:report:html": "eslint . -f html -o reports/lint/eslint.html",
+    "check:axe": "start-server-and-test \"npm run dev -- --host localhost --port 5173\" http://localhost:5173 \"node scripts/run-axe-check.mjs && node scripts/render-axe-report.mjs\"",
+    "check:vuln": "audit-ci --moderate --output-format json --report-type full > reports/deps/audit-ci.json",
     "check:security": "npm run lint && npm run check:vuln",
-    "check:all": "npm run check:oxlint && npm run check:axe && npm run check:security",
-    "precommit:verify": "npm run check:all && npm run test:all"
-  }
+    "check:deadcode": "knip --production --reporter json > reports/lint/knip.json",
+    "check:sast": "npm run lint:report:json && node scripts/generate-sast-report.mjs",
+    "check:dast:zap": "start-server-and-test \"npm run dev -- --host 0.0.0.0 --port 5173\" http://localhost:5173 \"node scripts/run-zap-baseline.mjs\"",
+    "check:dast:lighthouse": "start-server-and-test \"npm run dev -- --host localhost --port 5173\" http://localhost:5173 \"node scripts/run-lighthouse.mjs\"",
+    "check:dast": "npm run check:dast:zap && npm run check:dast:lighthouse",
+    "check:size": "npm run build && size-limit --json > reports/size/size-limit.json",
+    "check:types": "tsc --noEmit",
+    "check:all": "npm run check:types && npm run format && npm run lint && npm run lint:report:json && npm run lint:report:html && npm run check:oxlint && npm run check:deadcode && npm run check:sast && npm run check:axe && npm run check:security && npm run check:size",
+    "check:ci": "npm run check:all && npm run test:all && npm run check:dast",
+    "precommit:verify": "npm run check:staged",
+    "prepush:verify": "npm run check:all && npm run test:all"
+  },
+  "size-limit": [
+    {
+      "name": "app bundle",
+      "path": "dist/assets/*.js",
+      "limit": "250 KB"
+    }
+  ]
 }
 ```
+
+## `knip.json`
+
+```json
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "entry": ["src/main.tsx", "src/App.tsx"],
+  "project": ["src/**/*.{ts,tsx}"],
+  "ignore": ["dist/**", "test-results/**"],
+  "ignoreDependencies": ["@size-limit/preset-app"]
+}
+```
+
+> **Note on `check:size`:** the 250 KB budget is a starter value; bump it consciously when a heavy dep is justified and state the new number in the PR description.
+>
+> **Note on `check:deadcode`:** `knip` flags unused files/exports. If a file is intentionally kept (e.g. an older feature behind navigation), list its entry in `knip.json` - do not suppress the warning blindly.
 
 ## `.husky/pre-commit`
 
 ```sh
 #!/usr/bin/env sh
 npm run precommit:verify
+```
+
+## `.github/workflows/ci-cd.yml` (key points)
+
+```yaml
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+jobs:
+  quality:
+    # run check:all + test:all + DAST (ZAP then Lighthouse)
+  deploy-pages:
+    # only on push to main/master, gated by quality
+    # build with VITE_BASE_PATH=/${{ github.event.repository.name }}/
 ```
