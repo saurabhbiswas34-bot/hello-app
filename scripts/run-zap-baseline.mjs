@@ -32,6 +32,7 @@ const args = [
   'zap-baseline.py',
   '-t',
   url,
+  '-I',
   '-J',
   'zap-baseline.json',
   '-r',
