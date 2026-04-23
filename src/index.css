@@ -5,6 +5,7 @@
   --border: #e5e4e7;
   --code-bg: #f4f3ec;
   --accent: #aa3bff;
+  --link: #6b21a8;
   --accent-bg: rgba(170, 59, 255, 0.1);
   --accent-border: rgba(170, 59, 255, 0.5);
   --social-bg: rgba(244, 243, 236, 0.5);
@@ -38,6 +39,7 @@
     --border: #2e303a;
     --code-bg: #1f2028;
     --accent: #c084fc;
+    --link: #d8b4fe;
     --accent-bg: rgba(192, 132, 252, 0.15);
     --accent-border: rgba(192, 132, 252, 0.5);
     --social-bg: rgba(47, 48, 58, 0.5);
@@ -130,7 +132,8 @@ body {
 
 .app-shell-nav-link.is-active {
   background: var(--accent-bg);
-  color: var(--accent);
+  color: var(--text-h);
+  font-weight: 600;
 }
 
 .app-shell-body {
@@ -316,7 +319,7 @@ code {
 
 .tree-row.is-selected {
   background: var(--accent-bg);
-  color: var(--accent);
+  color: var(--text-h);
   font-weight: 600;
 }
 
@@ -411,7 +414,9 @@ code {
 }
 
 .markdown-body a {
-  color: var(--accent);
+  color: var(--link);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
 }
 
 .markdown-body code {
