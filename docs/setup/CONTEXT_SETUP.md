@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is the **long-form setup narrative** for recreating this project's toolchain: Vite React, Atomic Design layout, Zustand + SWR, oxlint/ESLint/security audit, axe, Vitest, Playwright, Husky hooks, and GitHub Actions CI/CD + Pages deploy. It mirrors what the [react-quality-starter](../../.cursor/skills/react-quality-starter/SKILL.md) skill automates.
+This is the **long-form setup narrative** for recreating this project's toolchain: Vite React, Atomic Design layout, React `useReducer` + SWR, oxlint/ESLint/security audit, axe, Vitest, Playwright, Husky hooks, and GitHub Actions CI/CD + Pages deploy. It mirrors what the [react-quality-starter](../../.cursor/skills/react-quality-starter/SKILL.md) skill automates.
 
 **Shorter command-only list:** [BOOTSTRAP_COMMANDS.md](BOOTSTRAP_COMMANDS.md). **Copy-paste configs (single source for agents):** [.cursor/skills/react-quality-starter/reference.md](../../.cursor/skills/react-quality-starter/reference.md).
 Implementation conventions:
@@ -34,10 +34,10 @@ Use another directory name if you prefer; keep commands consistent afterward.
 ## 2) Add app dependencies
 
 ```bash
-npm install swr zustand react-router-dom
+npm install swr react-router-dom
 ```
 
-- **Zustand:** global UI state (e.g. accordion `openItemId`).
+- **useReducer + context:** local UI state orchestration (e.g. accordion `openItemId`).
 - **SWR:** data fetching and cache for template-level loading/error/success.
 - **React Router DOM:** route-level feature navigation (`BrowserRouter`, `Routes`, `Route`, `NavLink`).
 
@@ -174,7 +174,7 @@ npm run precommit:verify
 ## 14) What this setup gives you
 
 - Atomic Design-oriented components
-- Zustand + SWR with a clear template/hook boundary
+- `useReducer` + SWR with a clear template/hook boundary
 - Lint + security lint + vulnerability audit
 - Accessibility scan via axe
 - Unit + E2E tests

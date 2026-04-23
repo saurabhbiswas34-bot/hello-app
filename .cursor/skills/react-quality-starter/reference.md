@@ -7,7 +7,7 @@ Copy-paste templates for this starter setup.
 Runtime:
 
 ```bash
-npm install swr zustand react-router-dom
+npm install swr react-router-dom
 ```
 
 Dev (tooling + gates):
@@ -280,6 +280,11 @@ Rules:
 - If component props change, update all callers and tests in the same change.
 - BEM is mandatory for component CSS (`block__element--modifier`).
 - TypeScript is mandatory for component code (`.tsx`/`.ts`), no new `.jsx`/`.js`.
+- When shared component state is needed, use reducer/context split files:
+  - `<ComponentName>Provider.tsx` (provider + `useReducer`)
+  - `use<ComponentName>Store.ts` (safe context hook)
+  - `<componentName>Reducer.ts` (reducer + actions + initial state)
+  - `<componentName>Context.ts` (context object + value type)
 
 ## Removal checklists
 

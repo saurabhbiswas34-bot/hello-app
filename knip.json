@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@latest/schema.json",
-  "entry": ["src/main.tsx", "src/App.tsx"],
+  "entry": ["src/app/main.tsx", "src/app/App.tsx"],
   "project": ["src/**/*.{ts,tsx}"],
   "ignore": ["dist/**", "test-results/**", "reports/**"],
   "ignoreDependencies": [
@@ -8,7 +8,6 @@
     "react",
     "react-dom",
     "react-markdown",
-    "swr",
-    "zustand"
+    "swr"
   ]
 }

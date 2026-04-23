@@ -4,7 +4,7 @@
 
 ### Prompt
 
-Create a new React app with Atomic Design, Zustand for state, SWR for data fetching, unit tests, Playwright E2E, security checks, and a pre-commit hook.
+Create a new React app with Atomic Design, React useReducer state, SWR for data fetching, unit tests, Playwright E2E, security checks, and a pre-commit hook.
 
 ### Expected outcome
 
@@ -15,7 +15,7 @@ Create a new React app with Atomic Design, Zustand for state, SWR for data fetch
   - `src/components/organisms`
   - `src/features/<feature>`
   - `src/app`
-- Zustand + SWR wired into a sample feature.
+- `useReducer` + SWR wired into a sample feature.
 - Unit test(s) under `src/**/*.test.{ts,tsx}`.
 - E2E test(s) under `tests/e2e`.
 - Scripts for lint/security/vuln/a11y/tests/precommit added.

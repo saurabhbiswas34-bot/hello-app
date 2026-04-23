@@ -1,4 +1,4 @@
-import useAccordionStore from '../organisms/Accordion/store/useAccordionStore'
+import { useAccordionStore } from '../organisms/Accordion/store/useAccordionStore'
 import type { AccordionEntry } from '../../types/accordion'
 import './AccordionItem.css'
 
@@ -7,8 +7,8 @@ interface AccordionItemProps {
 }
 
 function AccordionItem({ item }: AccordionItemProps) {
-  const openItemId = useAccordionStore((state) => state.openItemId)
-  const toggleItem = useAccordionStore((state) => state.toggleItem)
+  const { state, dispatch } = useAccordionStore()
+  const openItemId = state.openItemId
   const isOpen = openItemId === item.id
 
   return (
@@ -18,7 +18,7 @@ function AccordionItem({ item }: AccordionItemProps) {
       <button
         type="button"
         className="accordion__trigger"
-        onClick={() => toggleItem(item.id)}
+        onClick={() => dispatch({ type: 'toggle', itemId: item.id })}
       >
         <span>{item.title}</span>
         <span className="accordion__icon" aria-hidden="true">

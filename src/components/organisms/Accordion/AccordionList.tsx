@@ -1,5 +1,6 @@
 import AccordionItem from '../../molecules/AccordionItem'
 import type { AccordionEntry } from '../../../types/accordion'
+import { AccordionStoreProvider } from './store/AccordionStoreProvider'
 import './AccordionList.css'
 
 interface AccordionListProps {
@@ -8,11 +9,13 @@ interface AccordionListProps {
 
 function AccordionList({ items }: AccordionListProps) {
   return (
-    <section className="accordion" aria-label="FAQ accordion">
-      {items.map((item) => (
-        <AccordionItem key={item.id} item={item} />
-      ))}
-    </section>
+    <AccordionStoreProvider>
+      <section className="accordion" aria-label="FAQ accordion">
+        {items.map((item) => (
+          <AccordionItem key={item.id} item={item} />
+        ))}
+      </section>
+    </AccordionStoreProvider>
   )
 }
 

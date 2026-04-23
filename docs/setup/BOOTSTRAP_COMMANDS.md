@@ -25,7 +25,7 @@ npm install
 ## Runtime dependencies
 
 ```bash
-npm install swr zustand react-router-dom
+npm install swr react-router-dom
 ```
 
 ## Dev dependencies

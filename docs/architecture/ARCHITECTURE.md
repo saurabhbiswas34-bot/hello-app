@@ -6,7 +6,7 @@ This app is a Vite + React + TypeScript SPA with:
 
 - `react-router-dom` for route navigation
 - SWR hooks for feature data fetching
-- Zustand for shared accordion open/close UI state
+- React `useReducer` + context for accordion open/close UI state
 - Atomic Design-inspired UI folders (`atoms`, `molecules`, `organisms`)
 - feature-first folders for pages and feature-owned types
 
@@ -92,9 +92,12 @@ Both hooks return normalized `{ data, isLoading, error }` style state for page c
 
 ### Accordion UI state
 
+- `components/organisms/Accordion/store/AccordionStoreProvider.tsx`
 - `components/organisms/Accordion/store/useAccordionStore.ts`
+- `components/organisms/Accordion/store/accordionReducer.ts`
+- `components/organisms/Accordion/store/accordionContext.ts`
 - Used by `components/molecules/AccordionItem.tsx`
-- Keeps open item id and toggle action in one place for consistent accordion behavior
+- Implements reducer-driven state with a split provider/hook/reducer/context design for consistent accordion behavior
 
 ## Styling
 

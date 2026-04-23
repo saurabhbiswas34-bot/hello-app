@@ -16,9 +16,9 @@ const MOCK_FAQS: AccordionEntry[] = [
   },
   {
     id: 'item-2',
-    title: 'Why use Zustand for this accordion?',
+    title: 'Why use useReducer for this accordion?',
     content:
-      'Zustand gives a simple global store for open/close state, so any component can control or read the active accordion item.',
+      'A local useReducer with context keeps open/close state explicit, testable, and colocated with the accordion UI behavior.',
   },
   {
     id: 'item-3',

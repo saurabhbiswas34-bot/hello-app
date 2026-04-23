@@ -4,8 +4,8 @@ This repository is a **bootstrap starter for new projects** built with Vite + Re
 
 Use this as the base when starting a new UI project that needs:
 
-- Atomic Design folder structure (`atoms` -> `templates`)
-- Zustand state + SWR data hook patterns
+- Atomic Design folder structure (`atoms` -> `molecules` -> `organisms`) plus feature pages in `src/features`
+- React `useReducer` state + SWR data hook patterns
 - Linting, formatting, security checks, dead-code checks, and bundle-size checks
 - Unit tests (Vitest) + E2E tests (Playwright)
 - Accessibility checks (axe)

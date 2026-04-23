@@ -68,6 +68,23 @@ Checklist:
 - Update tests for both existing and new behavior
 - Confirm no feature route behavior regresses unintentionally
 - Preserve existing BEM class naming when extending styles
+- If component state orchestration grows, prefer React `useReducer` + context with clear file roles (provider, hook, reducer, context)
+
+Recommended file template:
+
+```text
+src/components/<layer>/<ComponentName>/
+  <ComponentName>.tsx                # UI composition
+  <ComponentName>.css                # BEM styles
+  <ComponentName>.test.tsx           # behavior tests
+  store/
+    <ComponentName>Provider.tsx      # context provider + useReducer wiring
+    use<ComponentName>Store.ts       # hook to consume context safely
+    <componentName>Reducer.ts        # reducer + actions + initial state
+    <componentName>Context.ts        # context object and value type
+```
+
+Use this template when state is shared across multiple child components of the same reusable component boundary.
 
 ## Remove a component
 

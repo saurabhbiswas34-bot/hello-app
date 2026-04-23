@@ -1,6 +1,6 @@
 ﻿---
 name: react-quality-starter
-description: Creates a Vite React starter with Atomic Design folders, Zustand state, SWR data hook, quality/security checks, accessibility checks (axe), unit tests (Vitest), E2E tests (Playwright), Husky hooks, and CI/CD guidance. Use when the user asks to bootstrap a React project with production-ready quality gates, to add the same gates to an existing Vite React app, or to add/modify a feature inside an app already on this stack.
+description: Creates a Vite React starter with Atomic Design folders, React useReducer state, SWR data hook, quality/security checks, accessibility checks (axe), unit tests (Vitest), E2E tests (Playwright), Husky hooks, and CI/CD guidance. Use when the user asks to bootstrap a React project with production-ready quality gates, to add the same gates to an existing Vite React app, or to add/modify a feature inside an app already on this stack.
 ---
 
 # React Quality Starter
@@ -24,7 +24,7 @@ Current preferred architecture in this repo:
 
 ## When to Use
 
-- Starting a **new** React SPA with Vite and wanting Atomic Design + Zustand + SWR + tests + pre-commit gates.
+- Starting a **new** React SPA with Vite and wanting Atomic Design + useReducer + SWR + tests + pre-commit gates.
 - An **existing** Vite React app needs oxlint, axe, `audit-ci`, security lint, Vitest, Playwright, and/or Husky pre-commit wired like this skill.
 - A repo already on this stack is getting a **new feature**, or an **existing feature** is being changed.
 - The user explicitly wants a "production-ready starter" or the same tooling stack named in the description.
@@ -79,7 +79,7 @@ Announce the classification and the coexistence plan in one sentence before writ
 
 ### Phase 2 - Dependencies
 
-1. Runtime: `swr`, `zustand`.
+1. Runtime: `swr`.
 2. Dev: `oxlint`, `@axe-core/cli`, `browser-driver-manager`, `audit-ci`, `eslint-plugin-security`, Vitest + Testing Library + `jsdom`, `@playwright/test`, `start-server-and-test`, `husky`.
 3. One-time binaries: `npx playwright install chromium`, `npx browser-driver-manager install chrome@146` (adjust Chrome major if the project standard differs - document the choice).
 
@@ -111,7 +111,7 @@ Prefer co-located styles (`Component.tsx` + `Component.css`) and keep `src/index
 
 ### Phase 6 - Sample wiring (if greenfield)
 
-- Optional but typical: one SWR-based data hook, Zustand slice, and a small UI flow so unit + E2E tests have a real target. Keep sample code **minimal** and aligned with project naming.
+- Optional but typical: one SWR-based data hook, a `useReducer` state slice with context, and a small UI flow so unit + E2E tests have a real target. Keep sample code **minimal** and aligned with project naming.
 
 ### Phase 7 - Change work (feature/component)
 
@@ -133,7 +133,12 @@ Only when the classification is **feature-addition**, **feature-modification**, 
 10. **Co-located styling/tests:** for component changes, keep `Component.tsx`, `Component.css`, and `Component.test.tsx` together where practical.
 11. **BEM is mandatory:** all new or modified CSS must follow `block__element--modifier` naming.
 12. **TypeScript is mandatory:** new/updated React app code must use `.tsx` / `.ts`; do not add `.jsx` / `.js` feature/component files.
-13. **Content-folder globs:** `import.meta.glob({ eager: true, query: '?raw' })` is fine for tens of files; plan lazy loading before 50+ files. Note the trade-off to the user when you use it.
+13. **Reducer/context split pattern:** when component state orchestration is shared across child components, prefer this file split:
+    - `<ComponentName>Provider.tsx` (provider + `useReducer`)
+    - `use<ComponentName>Store.ts` (safe context hook)
+    - `<componentName>Reducer.ts` (reducer + actions + initial state)
+    - `<componentName>Context.ts` (context object + value type)
+14. **Content-folder globs:** `import.meta.glob({ eager: true, query: '?raw' })` is fine for tens of files; plan lazy loading before 50+ files. Note the trade-off to the user when you use it.
 
 ### Phase 7A - Removal protocol (feature/component)
 

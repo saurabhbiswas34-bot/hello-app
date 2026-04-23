@@ -1,16 +1,15 @@
-import { create } from 'zustand'
+import { useContext } from 'react'
+import { AccordionContext } from './accordionContext'
 
-interface AccordionStoreState {
-  openItemId: string | null
-  toggleItem: (itemId: string) => void
+function useAccordionStore() {
+  const context = useContext(AccordionContext)
+  if (!context) {
+    throw new Error(
+      'useAccordionStore must be used inside AccordionStoreProvider'
+    )
+  }
+
+  return context
 }
 
-const useAccordionStore = create<AccordionStoreState>((set) => ({
-  openItemId: null,
-  toggleItem: (itemId: string) =>
-    set((state) => ({
-      openItemId: state.openItemId === itemId ? null : itemId,
-    })),
-}))
-
-export default useAccordionStore
+export { useAccordionStore }
