@@ -56,10 +56,10 @@ const chromePath = findBinaryRecursively(join(chromeRoot, chromeDirName), [
   'chrome',
 ])
 
-const chromedriverPath = findBinaryRecursively(join(driverRoot, chromeDirName), [
-  'chromedriver.exe',
-  'chromedriver',
-])
+const chromedriverPath = findBinaryRecursively(
+  join(driverRoot, chromeDirName),
+  ['chromedriver.exe', 'chromedriver']
+)
 
 if (
   !chromePath ||
