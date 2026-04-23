@@ -43,6 +43,7 @@ jobs:
       - name: Run DAST ZAP
         env:
           DAST_TARGET_URL: http://host.docker.internal:5173
+          __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS: host.docker.internal
         run: npm run check:dast:zap
 
       - name: Run DAST Lighthouse
