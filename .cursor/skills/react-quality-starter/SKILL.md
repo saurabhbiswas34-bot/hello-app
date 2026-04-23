@@ -111,7 +111,7 @@ Prefer co-located styles (`Component.tsx` + `Component.css`) and keep `src/index
 
 ### Phase 6 - Sample wiring (if greenfield)
 
-- Optional but typical: one SWR-based data hook, a `useReducer` state slice with context, and a small UI flow so unit + E2E tests have a real target. Keep sample code **minimal** and aligned with project naming.
+- Optional but typical: one SWR-based data hook, a `useReducer` + context state flow, and a small UI flow so unit + E2E tests have a real target. Keep sample code **minimal** and aligned with project naming.
 
 ### Phase 7 - Change work (feature/component)
 
@@ -119,17 +119,19 @@ Only when the classification is **feature-addition**, **feature-modification**, 
 
 1. **Read `docs/architecture/ARCHITECTURE.md` before coding.** If your change will alter the rendering flow, data source, or top-level App mount, plan the doc update in the same change - that doc's own Red Flags call out staleness as a defect.
 2. **Feature addition implies coexistence.** The default mental model is: there is already a feature at the home route; you are adding a sibling feature. Provide navigation. Never replace the app render target silently.
-3. **Preserve existing contracts.** Keep existing components, hooks, stores, CSS classes, and tests working unless the user explicitly asks for removal. Existing e2e specs must keep passing (or be updated in step with code, not deleted).
+3. **Preserve existing contracts.** Keep existing components, hooks, reducer/context state modules, CSS classes, and tests working unless the user explicitly asks for removal. Existing e2e specs must keep passing (or be updated in step with code, not deleted).
 4. **Adding a dependency:** State the bundle-size delta and run `npm run check:size`. Justify anything heavy (markdown parsers, date libs, UI kits). Prefer native HTML and existing deps first.
 5. **Custom interactive widgets:** Custom tree / tabs / menu / combobox need a documented keyboard plan (arrow keys, Home/End, Enter) and the correct ARIA composite roles (`role="tree"` -> `role="treeitem"` children, `role="tablist"` -> `role="tab"` + `role="tabpanel"`, etc.). Prefer native HTML equivalents when the semantics fit.
-6. **One data source per concern:** A component should not read the same state from both props and store for the same concept.
+6. **One data source per concern:** A component should not read the same state from both props and reducer/context for the same concept.
 7. **No hardcoded endpoints:** API URLs must come from config (for example `src/config/api.ts`) and env (`VITE_API_BASE_URL` fallback model).
 8. **Types ownership:** Feature-only types belong in `features/<name>/types`; shared cross-feature types belong in `src/types`.
 9. **Component placement by Atomic Design:**
-   - atoms: smallest primitives, no feature-specific fetching/store logic
-   - molecules: small compositions of atoms
-   - organisms: feature-level reusable compositions
-   - page/route wiring stays in `src/features` and `src/app`, not inside shared atoms/molecules
+
+- atoms: smallest primitives, no feature-specific fetching/reducer-context logic
+- molecules: small compositions of atoms
+- organisms: feature-level reusable compositions
+- page/route wiring stays in `src/features` and `src/app`, not inside shared atoms/molecules
+
 10. **Co-located styling/tests:** for component changes, keep `Component.tsx`, `Component.css`, and `Component.test.tsx` together where practical.
 11. **BEM is mandatory:** all new or modified CSS must follow `block__element--modifier` naming.
 12. **TypeScript is mandatory:** new/updated React app code must use `.tsx` / `.ts`; do not add `.jsx` / `.js` feature/component files.
@@ -191,7 +193,7 @@ When removing a feature or component:
 ### Task classification
 
 - Changed what the app root renders without first classifying the task and confirming with the user.
-- Deleted, moved, or orphaned existing components / hooks / stores / CSS in response to a "feature addition" request.
+- Deleted, moved, or orphaned existing components / hooks / reducer-context modules / CSS in response to a "feature addition" request.
 - Existing e2e spec silently removed or rewritten instead of kept passing alongside new specs.
 - The word "create" in the user's prompt was treated as "replace".
 
@@ -199,7 +201,7 @@ When removing a feature or component:
 
 - Custom ARIA role used without its required composite descendants (e.g. `role="tree"` on a `<ul>` whose items lack `role="treeitem"`, `tablist` without `tab`, `menu` without `menuitem`).
 - Nested landmark elements with overlapping purpose (`<aside>` wrapping a single `<nav>`, `<main>` inside `<main>`).
-- A single component reading the same state from two sources (props AND store; props AND context) for the same concept.
+- A single component reading the same state from two sources (for example props AND reducer/context) for the same concept.
 - `import.meta.glob` used with `{ eager: true }` for a folder that will grow (user content, docs, posts) without noting the trade-off.
 - New feature shipped without updating `docs/architecture/ARCHITECTURE.md` when that doc describes a rendering flow that just changed.
 - Installing a new dependency without stating the bundle-size impact or running `check:size`.

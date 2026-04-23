@@ -22,6 +22,7 @@ Quality in this repo is **layered**: fast static checks, accessibility, security
 | Command                    | Purpose                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------- |
 | `npm run check:oxlint`     | Fast static analysis (oxlint)                                                                         |
+| `npm run check:docs-sync`  | Markdown/skills sync guard against stale architecture references                                      |
 | `npm run check:axe`        | Accessibility scan via axe-core CLI on running app                                                    |
 | `npm run check:security`   | ESLint (incl. security plugin) + `check:vuln`                                                         |
 | `npm run check:all`        | Full static quality chain (types, format, lint, reports, oxlint, deadcode, SAST, axe, security, size) |
@@ -36,6 +37,7 @@ Quality in this repo is **layered**: fast static checks, accessibility, security
 ## What Each Gate Validates
 
 - **`check:oxlint`** - Code-quality and lint-style issues oxlint is configured to catch.
+- **`check:docs-sync`** - Fails if markdown docs/skills contain banned stale references (for example old state-management/path wording).
 - **`check:axe`** - Automated a11y rules against `http://localhost:5173` while dev server is up (`start-server-and-test`). Requires working Chrome/ChromeDriver pathing for the axe CLI (see `scripts/run-axe-check.mjs`).
 - **`check:security`** - ESLint including `eslint-plugin-security` recommendations plus dependency vulnerabilities via `audit-ci`.
 - **`check:all`** - Full static/a11y/security/deadcode/size gate chain.
