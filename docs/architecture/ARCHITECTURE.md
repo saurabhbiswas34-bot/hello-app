@@ -45,15 +45,16 @@ src/
       types/
     products/
       hooks/
-      types/
+      utils/
   types/
     accordion.ts   # shared contract
+    product.ts     # catalog item (shared with product grid UI)
 ```
 
 ### Ownership rules
 
 - Feature-owned contracts live in feature folders (for example `features/users/types/user.ts`).
-- Truly shared contracts remain in `src/types` (currently `accordion.ts`).
+- Truly shared contracts remain in `src/types` (for example `accordion.ts`, `product.ts` when reused by shared components).
 - Shared reusable UI lives in `src/components`.
 - Route pages live in `src/features/*` and are mounted from `src/app/App.tsx`.
 - React app code is TypeScript-only (`.tsx` for components/pages, `.ts` for modules).
@@ -88,7 +89,10 @@ Routes currently exposed:
 - `features/users/hooks/useUsersData.ts`
 - `features/products/hooks/useProductsData.ts`
 
-Both hooks return normalized `{ data, isLoading, error }` style state for page components.
+Hook return shapes:
+
+- `useUsersData` returns `{ items, isLoading, error }` for accordion rendering.
+- `useProductsData` returns `{ products, isLoading, error }` for the product grid.
 
 ### Accordion UI state
 

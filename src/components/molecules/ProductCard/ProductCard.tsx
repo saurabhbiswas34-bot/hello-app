@@ -1,7 +1,7 @@
 import Image from '../../atoms/Image/Image'
 import ProductCategory from '../../atoms/ProductCategory/ProductCategory'
 import ProductMeta from '../ProductMeta/ProductMeta'
-import type { Product } from '../../../features/products/types/product'
+import type { Product } from '../../../types/product'
 import './ProductCard.css'
 
 interface ProductCardProps {

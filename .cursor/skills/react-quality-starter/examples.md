@@ -97,7 +97,7 @@ Create a reusable `Badge` component and use it in Product cards. Follow Atomic D
 
 - `Badge` added under the correct layer (typically `src/components/atoms/Badge.tsx`).
 - `Badge.css` and `Badge.test.tsx` are co-located.
-- Call sites import and use `Badge` without embedding badge styles inline.
+- Product cards import and use `Badge` without embedding badge styles inline.
 - Tests and lint/type checks pass after integration.
 
 ## Example 7: Modify existing component API

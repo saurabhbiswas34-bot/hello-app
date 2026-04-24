@@ -3,7 +3,7 @@ import './Home.css'
 
 function Home() {
   return (
-    <main className="home-page">
+    <div className="home-page">
       <h1 className="home-page__title">React Quality Bootstrap Starter</h1>
       <p className="home-page__description">
         This starter combines Atomic Design, feature slicing, quality gates, and
@@ -27,7 +27,7 @@ function Home() {
           Use the top navigation for the Home, Users accordion, Products cards
         </p>
       </section>
-    </main>
+    </div>
   )
 }
 

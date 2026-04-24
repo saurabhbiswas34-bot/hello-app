@@ -86,9 +86,10 @@ src/
       types/
     products/
       hooks/
-      types/
+      utils/
   types/
     accordion.ts
+    product.ts
   test/
 tests/
   e2e/

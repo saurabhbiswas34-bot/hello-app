@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import type { Product } from '../types/product'
+import type { Product } from '../../../types/product'
 import { API_ENDPOINTS } from '../../../config/api'
 
 interface ProductsResponse {

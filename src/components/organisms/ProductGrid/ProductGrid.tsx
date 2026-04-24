@@ -1,4 +1,4 @@
-import type { Product } from '../../../features/products/types/product'
+import type { Product } from '../../../types/product'
 import ProductCard from '../../molecules/ProductCard/ProductCard'
 import './ProductGrid.css'
 

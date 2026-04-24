@@ -59,7 +59,7 @@ Also see implementation conventions:
 
 **Current critical flows (examples):**
 
-- App shell route navigation (`/`, `/users`)
+- App shell route navigation (`/`, `/users`, `/products`)
 - Users page rendering with data mapping
 - Products page rendering with grid/cards
 - Accordion item open/close behavior where used
