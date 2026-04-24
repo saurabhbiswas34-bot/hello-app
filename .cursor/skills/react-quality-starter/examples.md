@@ -49,7 +49,7 @@ I already have a React app. Add oxlint, accessibility scan, vulnerability check,
 
 ### Prompt
 
-Add unit and Playwright tests for my users/products routes and make sure all tests pass.
+Add unit and Playwright tests for my users route and make sure all tests pass.
 
 ### Expected outcome
 
@@ -91,20 +91,20 @@ Create reusable docs for setup commands, quality gates, testing strategy, and ar
 
 ### Prompt
 
-Create a reusable `Badge` component and use it in Product cards. Follow Atomic Design and keep CSS near the component.
+Create a reusable `Badge` component and use it next to user accordion titles. Follow Atomic Design and keep CSS near the component.
 
 ### Expected outcome
 
 - `Badge` added under the correct layer (typically `src/components/atoms/Badge.tsx`).
 - `Badge.css` and `Badge.test.tsx` are co-located.
-- Product cards import and use `Badge` without embedding badge styles inline.
+- Callers import and use `Badge` without embedding badge styles inline.
 - Tests and lint/type checks pass after integration.
 
 ## Example 7: Modify existing component API
 
 ### Prompt
 
-Update `ProductCard` to support an optional `onSelect` callback and keep backward compatibility.
+Update `AccordionItem` to support an optional `onSelect` callback and keep backward compatibility.
 
 ### Expected outcome
 
@@ -131,7 +131,7 @@ Remove the `Accordion` page component and its CSS, and clean up all references.
 
 ### Prompt
 
-Remove the FAQ feature route entirely and keep Users/Products/Home working.
+Remove the FAQ feature route entirely and keep Users/Home working.
 
 ### Expected outcome
 
