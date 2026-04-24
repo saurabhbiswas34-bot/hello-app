@@ -1,0 +1,12 @@
+.image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.image--cover {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: var(--code-bg);
+}

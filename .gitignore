@@ -39,3 +39,12 @@ coverage/
 
 # Stryker mutation testing (Phase 3)
 .stryker-tmp/
+
+*storybook.log
+storybook-static
+
+# Local MCP runtime (install deps locally; not vendored)
+.cursor/jira-mcp-runtime/
+
+# Storybook template leftovers (stories live under src/components)
+src/stories/

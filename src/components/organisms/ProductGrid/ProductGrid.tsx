@@ -1,5 +1,5 @@
 import type { Product } from '../../../features/products/types/product'
-import ProductCard from '../../molecules/ProductCard'
+import ProductCard from '../../molecules/ProductCard/ProductCard'
 import './ProductGrid.css'
 
 interface ProductGridProps {

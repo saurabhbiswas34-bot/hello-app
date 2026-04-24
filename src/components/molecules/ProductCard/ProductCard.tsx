@@ -1,7 +1,7 @@
-import ProductCategory from '../atoms/ProductCategory'
-import ProductImage from '../atoms/ProductImage'
-import ProductMeta from './ProductMeta'
-import type { Product } from '../../features/products/types/product'
+import Image from '../../atoms/Image/Image'
+import ProductCategory from '../../atoms/ProductCategory/ProductCategory'
+import ProductMeta from '../ProductMeta/ProductMeta'
+import type { Product } from '../../../features/products/types/product'
 import './ProductCard.css'
 
 interface ProductCardProps {
@@ -12,7 +12,7 @@ interface ProductCardProps {
 function ProductCard({ product, priceLabel }: ProductCardProps) {
   return (
     <article className="product-card">
-      <ProductImage src={product.thumbnail} alt={product.title} />
+      <Image src={product.thumbnail} alt={product.title} variant="cover" />
       <div className="product-card__body">
         <ProductCategory category={product.category} />
         <h2 className="product-card__title">{product.title}</h2>

@@ -1,4 +1,4 @@
-import SectionTitle from '../../components/atoms/SectionTitle'
+import SectionTitle from '../../components/atoms/SectionTitle/SectionTitle'
 import AccordionList from '../../components/organisms/Accordion/AccordionList'
 import useUsersData from './hooks/useUsersData'
 import './Users.css'

@@ -1,4 +1,4 @@
-import { useAccordionStore } from '../organisms/Accordion/store/useAccordionStore'
+import { useAccordionStore } from '../../organisms/Accordion/store/useAccordionStore'
 import type { AccordionEntry } from '../../types/accordion'
 import './AccordionItem.css'
 

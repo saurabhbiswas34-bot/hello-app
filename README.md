@@ -9,6 +9,7 @@ Use this as the base when starting a new UI project that needs:
 - Linting, formatting, security checks, dead-code checks, and bundle-size checks
 - Unit tests (Vitest) + E2E tests (Playwright)
 - Accessibility checks (axe)
+- Storybook for component stories (same repo as the app; see **Storybook** below)
 - BEM CSS architecture for all component/feature styling
 - TypeScript-only React code (`.tsx` / `.ts`)
 - Husky pre-commit and pre-push hooks
@@ -25,6 +26,15 @@ Current route demos:
 ```bash
 npm install
 npm run dev
+```
+
+## Storybook
+
+Component stories live in this **same repository** under `src/**/*.stories.*`, with config in `.storybook/`. There is no separate Storybook-only repo or `storybook-mcp` package; Vite and Storybook both use this project root.
+
+```bash
+npm run storybook      # dev server (default http://localhost:6006)
+npm run build-storybook # static output to storybook-static/
 ```
 
 ## Verification Commands

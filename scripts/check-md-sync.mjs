@@ -23,7 +23,8 @@ const FORBIDDEN_PATTERNS = [
   },
   {
     pattern: /src\/store\/useAccordionStore\.(js|ts|tsx)/i,
-    reason: 'Accordion store path changed to components/organisms/Accordion/store.',
+    reason:
+      'Accordion store path changed to components/organisms/Accordion/store.',
   },
   {
     pattern: /useAccordionStore\.js/i,

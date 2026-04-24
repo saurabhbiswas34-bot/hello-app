@@ -1,4 +1,4 @@
-import AccordionItem from '../../molecules/AccordionItem'
+import AccordionItem from '../../molecules/AccordionItem/AccordionItem'
 import type { AccordionEntry } from '../../../types/accordion'
 import { AccordionStoreProvider } from './store/AccordionStoreProvider'
 import './AccordionList.css'

@@ -1,4 +1,5 @@
-import { act, render, screen, within } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import App from './App'
 
 const setPath = (path: string): void => {
@@ -37,11 +38,10 @@ describe('App shell navigation', () => {
   })
 
   it('switches to the Users view when route changes', async () => {
+    const user = userEvent.setup()
     render(<App />)
-    act(() => {
-      window.history.pushState({}, '', '/users')
-      window.dispatchEvent(new PopStateEvent('popstate'))
-    })
+
+    await user.click(screen.getByRole('link', { name: /users/i }))
 
     expect(
       await screen.findByRole('heading', { level: 1, name: 'Users' })

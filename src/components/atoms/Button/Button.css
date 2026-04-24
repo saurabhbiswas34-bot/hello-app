@@ -1,0 +1,123 @@
+.button {
+  --button-bg: var(--bg);
+  --button-fg: var(--text-h);
+  --button-border: var(--border);
+  --button-hover-bg: var(--code-bg);
+  --button-focus-ring: var(--accent-border);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.55rem 1rem;
+  margin: 0;
+  border: 1px solid var(--button-border);
+  border-radius: 8px;
+  background: var(--button-bg);
+  color: var(--button-fg);
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.button__label {
+  min-width: 0;
+  word-break: break-word;
+}
+
+.button__icon {
+  flex-shrink: 0;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--button-hover-bg);
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--button-focus-ring);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.button--default {
+  --button-bg: var(--bg);
+  --button-fg: var(--text-h);
+  --button-border: var(--border);
+  --button-hover-bg: var(--code-bg);
+}
+
+.button--blue {
+  --button-bg: #2563eb;
+  --button-fg: #fff;
+  --button-border: #1d4ed8;
+  --button-hover-bg: #1d4ed8;
+  --button-focus-ring: rgba(37, 99, 235, 0.55);
+}
+
+.button--red {
+  --button-bg: #dc2626;
+  --button-fg: #fff;
+  --button-border: #b91c1c;
+  --button-hover-bg: #b91c1c;
+  --button-focus-ring: rgba(220, 38, 38, 0.55);
+}
+
+.button--h-spacing-none {
+  margin-inline: 0;
+}
+
+.button--h-spacing-sm {
+  margin-inline: 0.25rem;
+}
+
+.button--h-spacing-md {
+  margin-inline: 0.5rem;
+}
+
+.button--h-spacing-lg {
+  margin-inline: 1rem;
+}
+
+.button--t-margin-none {
+  margin-top: 0;
+}
+
+.button--t-margin-sm {
+  margin-top: 0.25rem;
+}
+
+.button--t-margin-md {
+  margin-top: 0.5rem;
+}
+
+.button--t-margin-lg {
+  margin-top: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .button--default {
+    --button-bg: #1f2028;
+    --button-fg: var(--text-h);
+    --button-border: var(--border);
+    --button-hover-bg: #2e303a;
+  }
+}

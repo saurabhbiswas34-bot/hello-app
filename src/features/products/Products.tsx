@@ -1,4 +1,4 @@
-import SectionTitle from '../../components/atoms/SectionTitle'
+import SectionTitle from '../../components/atoms/SectionTitle/SectionTitle'
 import useProductsData from './hooks/useProductsData'
 import ProductGrid from '../../components/organisms/ProductGrid/ProductGrid'
 import formatPrice from './utils/formatPrice'

@@ -7,13 +7,6 @@
   flex-direction: column;
 }
 
-.product-card__image {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-  background: var(--code-bg);
-}
-
 .product-card__body {
   padding: 12px;
   display: flex;
