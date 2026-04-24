@@ -11,15 +11,12 @@ function Home() {
         defaults.
       </p>
       <div className="home-page__actions">
-        <Button variant="blue" horizontalSpacing="sm" topMargin="none">
-          Primary action
-        </Button>
         <Button
           url="https://storybook.js.org/"
           newTab
           variant="default"
           horizontalSpacing="sm"
-          topMargin="sm"
+          topMargin="none"
         >
           Storybook docs (new tab)
         </Button>
