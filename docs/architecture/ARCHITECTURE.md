@@ -23,7 +23,7 @@ Related docs:
 1. `src/app/main.tsx` mounts `App` and global `index.css`.
 2. `src/app/App.tsx` defines routes and lazy-loads page components.
 3. `src/app/AppShell.tsx` renders shell layout and `Navbar`, then route content via `Outlet`.
-4. Feature pages (`Home`, `Users`) fetch/render data through feature hooks and reusable UI components.
+4. Feature pages (`Home`, `Users`, `Products`) fetch/render data through feature hooks and reusable UI components.
 
 ## Folder Model
 
@@ -41,6 +41,9 @@ src/
   features/
     home/
     users/
+      hooks/
+      types/
+    products/
       hooks/
       types/
   types/
@@ -68,6 +71,7 @@ Routes currently exposed:
 
 - `/` -> `Home`
 - `/users` -> `Users`
+- `/products` -> `Products`
 
 `App` uses `React.lazy` + `Suspense` for route-level code splitting.
 
@@ -82,8 +86,9 @@ Routes currently exposed:
 ### Feature hooks
 
 - `features/users/hooks/useUsersData.ts`
+- `features/products/hooks/useProductsData.ts`
 
-Feature data hooks return normalized `{ data, isLoading, error }` style state for page components.
+Both hooks return normalized `{ data, isLoading, error }` style state for page components.
 
 ### Accordion UI state
 

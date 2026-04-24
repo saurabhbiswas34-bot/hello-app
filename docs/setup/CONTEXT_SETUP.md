@@ -84,6 +84,9 @@ src/
     users/
       hooks/
       types/
+    products/
+      hooks/
+      types/
   types/
     accordion.ts
   test/

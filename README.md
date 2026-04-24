@@ -19,6 +19,7 @@ Current route demos:
 
 - `/` Home
 - `/users` Users accordion list
+- `/products` Product card grid
 
 ## Quick Start
 

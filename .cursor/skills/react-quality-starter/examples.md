@@ -49,7 +49,7 @@ I already have a React app. Add oxlint, accessibility scan, vulnerability check,
 
 ### Prompt
 
-Add unit and Playwright tests for my users route and make sure all tests pass.
+Add unit and Playwright tests for my users/products routes and make sure all tests pass.
 
 ### Expected outcome
 
@@ -91,7 +91,7 @@ Create reusable docs for setup commands, quality gates, testing strategy, and ar
 
 ### Prompt
 
-Create a reusable `Badge` component and use it in the Users list UI. Follow Atomic Design and keep CSS near the component.
+Create a reusable `Badge` component and use it in Product cards. Follow Atomic Design and keep CSS near the component.
 
 ### Expected outcome
 
@@ -104,7 +104,7 @@ Create a reusable `Badge` component and use it in the Users list UI. Follow Atom
 
 ### Prompt
 
-Update `AccordionItem` to support an optional `onFocus` callback and keep backward compatibility.
+Update `ProductCard` to support an optional `onSelect` callback and keep backward compatibility.
 
 ### Expected outcome
 
@@ -131,7 +131,7 @@ Remove the `Accordion` page component and its CSS, and clean up all references.
 
 ### Prompt
 
-Remove the FAQ feature route entirely and keep Users and Home working.
+Remove the FAQ feature route entirely and keep Users/Products/Home working.
 
 ### Expected outcome
 
