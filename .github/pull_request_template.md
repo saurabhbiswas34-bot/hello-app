@@ -94,6 +94,7 @@ Tick every file this PR touches; leave unticked items as proof they genuinely di
 - [ ] `docs/conventions/COMPONENT_GUIDE.md`
 - [ ] `docs/conventions/FEATURE_GUIDE.md`
 - [ ] `docs/setup/CONTEXT_SETUP.md`
+- [ ] `docs/code-review/CODE-REVIEW.md`
 - [ ] `.cursor/rules/repo-standards.mdc`
 - [ ] `.cursor/skills/react-quality-starter/SKILL.md`
 - [ ] N/A — no user-facing or developer-facing surface changed
@@ -134,6 +135,7 @@ N/A
 
 > Reviewer ticks these, not the author.
 
+- [ ] Review used `docs/code-review/CODE-REVIEW.md` (five axes) where useful — gates are not a substitute
 - [ ] AC mapping is truthful (spot-checked at least one AC end-to-end)
 - [ ] Tests exercise the acceptance criteria, not just the happy path
 - [ ] No leftover `console.log`, `TODO`, or commented-out code

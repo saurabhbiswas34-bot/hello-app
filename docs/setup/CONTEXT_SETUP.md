@@ -9,6 +9,7 @@ Implementation conventions:
 
 - [../conventions/COMPONENT_GUIDE.md](../conventions/COMPONENT_GUIDE.md)
 - [../conventions/FEATURE_GUIDE.md](../conventions/FEATURE_GUIDE.md)
+- Pre-merge review: [../code-review/CODE-REVIEW.md](../code-review/CODE-REVIEW.md)
 
 ## When to Use This Doc
 

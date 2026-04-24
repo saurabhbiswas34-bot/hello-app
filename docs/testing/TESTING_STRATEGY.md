@@ -4,7 +4,7 @@
 
 This document defines **how we split tests** in this repo (Vitest + Testing Library for units, Playwright for E2E), what belongs in each layer, and how to know a change is proven. It complements `package.json` scripts and the pre-commit pipeline described in [../quality/QUALITY_GATES.md](../quality/QUALITY_GATES.md).
 
-**Related docs:** Run commands from [../setup/BOOTSTRAP_COMMANDS.md](../setup/BOOTSTRAP_COMMANDS.md) when you need a paste list; component and data boundaries for tests [../architecture/ARCHITECTURE.md](../architecture/ARCHITECTURE.md).
+**Related docs:** Run commands from [../setup/BOOTSTRAP_COMMANDS.md](../setup/BOOTSTRAP_COMMANDS.md) when you need a paste list; component and data boundaries for tests [../architecture/ARCHITECTURE.md](../architecture/ARCHITECTURE.md). Pre-merge review (beyond tests): [../code-review/CODE-REVIEW.md](../code-review/CODE-REVIEW.md).
 Also see implementation conventions:
 
 - [../conventions/COMPONENT_GUIDE.md](../conventions/COMPONENT_GUIDE.md)

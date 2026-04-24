@@ -4,7 +4,7 @@
 
 Quality in this repo is **layered**: fast static checks, accessibility, security lint + dependency audit, then tests and CI-only DAST. The **pre-commit hook** and CI jobs are designed so local green matches merge/deploy expectations.
 
-**Related:** Testing scope - [../testing/TESTING_STRATEGY.md](../testing/TESTING_STRATEGY.md). Command cheat sheet - [../setup/BOOTSTRAP_COMMANDS.md](../setup/BOOTSTRAP_COMMANDS.md).
+**Related:** Testing scope - [../testing/TESTING_STRATEGY.md](../testing/TESTING_STRATEGY.md). Command cheat sheet - [../setup/BOOTSTRAP_COMMANDS.md](../setup/BOOTSTRAP_COMMANDS.md). Pre-merge human review - [../code-review/CODE-REVIEW.md](../code-review/CODE-REVIEW.md).
 
 ## When to Use This Doc
 
@@ -14,7 +14,7 @@ Quality in this repo is **layered**: fast static checks, accessibility, security
 
 ## When NOT to Treat Gates as Complete Release Quality
 
-- Gates do not replace **code review**, **threat modeling**, or **manual exploratory** testing for UX.
+- Gates do not replace **code review** ([multi-axis checklist](../code-review/CODE-REVIEW.md)), **threat modeling**, or **manual exploratory** testing for UX.
 - `audit-ci` at `--moderate` is a **policy choice**; stricter tiers may be required for regulated environments.
 
 ## Commands

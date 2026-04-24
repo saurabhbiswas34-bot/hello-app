@@ -102,3 +102,4 @@ After feature add/modify/remove:
 - `npm run check:all`
 - `npm run test:all` (runs **unit** then **E2E**; or run `npm run test:unit` and `npm run test:e2e` separately while iterating)
 - Confirm docs match actual routes and feature flow.
+- Before merge: multi-axis review per [../code-review/CODE-REVIEW.md](../code-review/CODE-REVIEW.md).

@@ -80,6 +80,7 @@ For reusable bootstrap guidance and reference configs:
 
 - Skill process guide: `.cursor/skills/react-quality-starter/SKILL.md`
 - Copy-paste reference: `.cursor/skills/react-quality-starter/reference.md`
+- Pre-merge code review: `docs/code-review/CODE-REVIEW.md`
 - Project setup docs: `docs/setup/CONTEXT_SETUP.md`
 - Component conventions: `docs/conventions/COMPONENT_GUIDE.md`
 - Feature conventions: `docs/conventions/FEATURE_GUIDE.md`

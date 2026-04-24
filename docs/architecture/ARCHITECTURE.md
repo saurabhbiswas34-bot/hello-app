@@ -14,6 +14,7 @@ Related docs:
 
 - Setup flow: [../setup/CONTEXT_SETUP.md](../setup/CONTEXT_SETUP.md)
 - Quality checks: [../quality/QUALITY_GATES.md](../quality/QUALITY_GATES.md)
+- Code review: [../code-review/CODE-REVIEW.md](../code-review/CODE-REVIEW.md)
 - Testing scope: [../testing/TESTING_STRATEGY.md](../testing/TESTING_STRATEGY.md)
 - Component conventions: [../conventions/COMPONENT_GUIDE.md](../conventions/COMPONENT_GUIDE.md)
 - Feature conventions: [../conventions/FEATURE_GUIDE.md](../conventions/FEATURE_GUIDE.md)

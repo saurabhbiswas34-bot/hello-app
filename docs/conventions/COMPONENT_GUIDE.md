@@ -101,3 +101,4 @@ Checklist:
 - `npm run check:all`
 - `npm run test:all`
 - Ensure no stale references remain in docs and examples
+- Before merge: multi-axis review per [../code-review/CODE-REVIEW.md](../code-review/CODE-REVIEW.md)

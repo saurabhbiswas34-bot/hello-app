@@ -28,6 +28,7 @@ Current preferred architecture in this repo:
 - An **existing** Vite React app needs oxlint, axe, `audit-ci`, security lint, Vitest, Playwright, and/or Husky pre-commit wired like this skill.
 - A repo already on this stack is getting a **new feature**, or an **existing feature** is being changed.
 - The user explicitly wants a "production-ready starter" or the same tooling stack named in the description.
+- **Pre-merge review** (human or self-review): use the project’s five-axis checklist in `docs/code-review/CODE-REVIEW.md`.
 
 ## When NOT to Use
 
@@ -141,6 +142,7 @@ Only when the classification is **feature-addition**, **feature-modification**, 
     - `<componentName>Reducer.ts` (reducer + actions + initial state)
     - `<componentName>Context.ts` (context object + value type)
 14. **Content-folder globs:** `import.meta.glob({ eager: true, query: '?raw' })` is fine for tens of files; plan lazy loading before 50+ files. Note the trade-off to the user when you use it.
+15. **Pre-merge review:** Before treating change work as ready to merge, check it against `docs/code-review/CODE-REVIEW.md` (correctness, readability, architecture, security, performance). Automated gates do not replace this pass.
 
 ### Phase 7A - Removal protocol (feature/component)
 
@@ -223,6 +225,7 @@ Do not mark the task complete until **all** apply:
 
 ### Feature or component changes (additional gates)
 
+- [ ] Change aligns with `docs/code-review/CODE-REVIEW.md` (or reviewer explicitly owns that pass).
 - [ ] Classification was announced to the user and confirmed (explicitly or implicitly).
 - [ ] Existing features still render, still pass their tests, still have their routes / navigation entries.
 - [ ] If rendering flow, data source, or entry point changed: `docs/architecture/ARCHITECTURE.md` reflects the new reality.
@@ -252,5 +255,6 @@ npm run precommit:verify   # everything the hook runs
 
 - [examples.md](examples.md) - prompts and expected outcomes.
 - [reference.md](reference.md) - full `vite.config`, ESLint, Playwright, axe script, `package.json` scripts, Husky snippet.
+- Pre-merge code review (five axes): `docs/code-review/CODE-REVIEW.md`
 - Project component conventions: `docs/conventions/COMPONENT_GUIDE.md`
 - Project feature conventions: `docs/conventions/FEATURE_GUIDE.md`

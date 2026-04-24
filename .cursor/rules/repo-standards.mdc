@@ -13,5 +13,6 @@ For structure, process, tests, and verification, use **this repository only**—
 4. **Architecture** — Read `docs/architecture/ARCHITECTURE.md` before changing routing or top-level data flow; update docs when behavior or routes change.
 5. **Tooling context** — If setup or verification steps are unclear, use `docs/setup/CONTEXT_SETUP.md`.
 6. **Done means verified** — Before treating work as complete, run the verification commands from the Feature Guide and any checks the skill requires for what you changed.
+7. **Pre-merge review** — Reviewers and authors doing self-review use `docs/code-review/CODE-REVIEW.md` for the five-axis checklist (correctness, readability, architecture, security, performance). CI green is necessary, not sufficient.
 
 External tickets (e.g. Jira) describe **what** to build; **how** it must land in this repo is defined by the paths above.
