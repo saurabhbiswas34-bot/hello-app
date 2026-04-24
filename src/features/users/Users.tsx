@@ -7,7 +7,7 @@ function Users() {
   const { items, isLoading, error } = useUsersData()
 
   return (
-    <main className="users-page">
+    <div className="users-page">
       <SectionTitle>Users</SectionTitle>
       <p className="users-page__description">
         User records are loaded from DummyJSON and rendered as an accordion
@@ -24,7 +24,7 @@ function Users() {
           <AccordionList items={items} />
         </section>
       ) : null}
-    </main>
+    </div>
   )
 }
 

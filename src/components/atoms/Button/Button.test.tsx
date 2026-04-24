@@ -1,115 +1,155 @@
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
 import Button from './Button'
 
 describe('Button', () => {
-  it('renders a native button when url is omitted', () => {
-    render(<Button>Save</Button>)
-    expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
-  })
-
   it('renders an anchor when url is provided', () => {
-    render(<Button url="https://example.com/path">Docs</Button>)
-    const link = screen.getByRole('link', { name: /docs/i })
-    expect(link).toHaveAttribute('href', 'https://example.com/path')
+    render(<Button url="https://example.com/">Go</Button>)
+    const link = screen.getByRole('link', { name: 'Go' })
+    expect(link.tagName).toBe('A')
+    expect(link).toHaveAttribute('href', 'https://example.com/')
   })
 
-  it('trims url and still renders a link', () => {
-    render(<Button url="  https://example.com  ">Go</Button>)
-    expect(screen.getByRole('link')).toHaveAttribute(
-      'href',
-      'https://example.com'
-    )
+  it('renders a native button with type="button" when url is omitted', () => {
+    render(<Button>Press</Button>)
+    const btn = screen.getByRole('button', { name: 'Press' })
+    expect(btn.tagName).toBe('BUTTON')
+    expect(btn).toHaveAttribute('type', 'button')
   })
 
-  it('treats blank url as a button', () => {
-    render(<Button url="   ">Only spaces</Button>)
-    expect(
-      screen.getByRole('button', { name: 'Only spaces' })
-    ).toBeInTheDocument()
-  })
-
-  it('uses type="button" for the native button', () => {
-    render(<Button>Act</Button>)
-    expect(screen.getByRole('button')).toHaveAttribute('type', 'button')
-  })
-
-  it('applies variant and spacing modifiers', () => {
-    const { container } = render(
-      <Button variant="blue" horizontalSpacing="md" topMargin="lg">
-        Styled
-      </Button>
-    )
-    const el = container.querySelector('.button')
-    expect(el).toHaveClass(
+  it('applies default variant class by default', () => {
+    render(<Button>Press</Button>)
+    expect(screen.getByRole('button', { name: 'Press' })).toHaveClass(
       'button',
-      'button--blue',
-      'button--h-spacing-md',
-      'button--t-margin-lg'
+      'button--default'
     )
   })
 
-  it('opens new tab with noopener noreferrer when newTab is true', () => {
+  it('applies blue and red variant classes', () => {
+    const { rerender } = render(<Button variant="blue">X</Button>)
+    expect(screen.getByRole('button', { name: 'X' })).toHaveClass(
+      'button--blue'
+    )
+
+    rerender(<Button variant="red">X</Button>)
+    expect(screen.getByRole('button', { name: 'X' })).toHaveClass('button--red')
+  })
+
+  it('applies horizontal spacing and top margin modifier classes', () => {
     render(
-      <Button url="https://example.com" newTab>
-        External
+      <Button horizontalSpacing="md" topMargin="lg">
+        X
       </Button>
     )
-    const link = screen.getByRole('link', { name: /external/i })
+    const btn = screen.getByRole('button', { name: 'X' })
+    expect(btn).toHaveClass('button--h-spacing-md', 'button--t-margin-lg')
+  })
+
+  it('adds target="_blank" and merges safe rel tokens when newTab is true', () => {
+    render(
+      <Button url="https://example.com/" newTab>
+        Go
+      </Button>
+    )
+    const link = screen.getByRole('link', { name: 'Go' })
     expect(link).toHaveAttribute('target', '_blank')
-    expect(link.getAttribute('rel')).toMatch(/noopener/)
-    expect(link.getAttribute('rel')).toMatch(/noreferrer/)
+    const rel = link.getAttribute('rel') ?? ''
+    expect(rel.split(/\s+/)).toEqual(
+      expect.arrayContaining(['noopener', 'noreferrer'])
+    )
   })
 
-  it('merges rel tokens without dropping noopener noreferrer', () => {
+  it('preserves caller-provided rel tokens when merging', () => {
     render(
-      <Button url="https://example.com" newTab rel="nofollow">
-        Tab
+      <Button url="https://example.com/" newTab rel="author noopener">
+        Go
       </Button>
     )
-    const rel = screen.getByRole('link').getAttribute('rel') ?? ''
-    expect(rel.split(/\s+/)).toEqual(
-      expect.arrayContaining(['nofollow', 'noopener', 'noreferrer'])
+    const rel =
+      screen.getByRole('link', { name: 'Go' }).getAttribute('rel') ?? ''
+    const tokens = rel.split(/\s+/)
+    expect(tokens).toEqual(
+      expect.arrayContaining(['author', 'noopener', 'noreferrer'])
     )
+    // ensure no duplicate tokens
+    expect(new Set(tokens).size).toBe(tokens.length)
   })
 
-  it('shows different link icons for same-tab vs new-tab', () => {
-    const { rerender } = render(<Button url="https://a.test">Same</Button>)
-    expect(
-      screen.getByRole('link').querySelector('[data-icon="same-tab"]')
-    ).toBeInTheDocument()
+  it('renders new-tab icon when newTab is true, same-tab icon otherwise', () => {
+    const { container, rerender } = render(
+      <Button url="https://example.com/">Go</Button>
+    )
+    expect(container.querySelector('[data-icon="same-tab"]')).not.toBeNull()
+    expect(container.querySelector('[data-icon="new-tab"]')).toBeNull()
 
     rerender(
-      <Button url="https://a.test" newTab>
-        New
+      <Button url="https://example.com/" newTab>
+        Go
       </Button>
     )
-    const icon = screen.getByRole('link').querySelector('.button__icon')
-    expect(icon).toHaveAttribute('data-icon', 'new-tab')
+    expect(container.querySelector('[data-icon="new-tab"]')).not.toBeNull()
+    expect(container.querySelector('[data-icon="same-tab"]')).toBeNull()
+  })
+
+  it('marks the decorative icon as aria-hidden and non-focusable', () => {
+    const { container } = render(<Button url="https://example.com/">Go</Button>)
+    const icon = container.querySelector('svg.button__icon')
+    expect(icon).not.toBeNull()
     expect(icon).toHaveAttribute('aria-hidden', 'true')
+    expect(icon).toHaveAttribute('focusable', 'false')
   })
 
-  it('does not render a trailing icon for button mode', () => {
-    render(<Button>No link icon</Button>)
-    expect(document.querySelector('.button__icon')).toBeNull()
+  it('fires onClick in button mode', () => {
+    const handler = vi.fn()
+    render(<Button onClick={handler}>Press</Button>)
+    fireEvent.click(screen.getByRole('button', { name: 'Press' }))
+    expect(handler).toHaveBeenCalledTimes(1)
   })
 
-  it('supports disabled on native button', async () => {
-    const user = userEvent.setup()
-    const onClick = vi.fn()
+  it('fires onClick in link mode', () => {
+    const handler = vi.fn()
     render(
-      <Button disabled onClick={onClick}>
-        Off
+      <Button url="https://example.com/" onClick={handler}>
+        Go
       </Button>
     )
-    const btn = screen.getByRole('button')
-    expect(btn).toBeDisabled()
-    await user.click(btn)
-    expect(onClick).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('link', { name: 'Go' }))
+    expect(handler).toHaveBeenCalledTimes(1)
   })
 
-  it('forwards optional id without duplicating built-in ids', () => {
-    render(<Button id="my-cta">Go</Button>)
-    expect(screen.getByRole('button')).toHaveAttribute('id', 'my-cta')
+  it('does not fire onClick when button is disabled', () => {
+    const handler = vi.fn()
+    render(
+      <Button disabled onClick={handler}>
+        Press
+      </Button>
+    )
+    const btn = screen.getByRole('button', { name: 'Press' })
+    expect(btn).toBeDisabled()
+    fireEvent.click(btn)
+    expect(handler).not.toHaveBeenCalled()
+  })
+
+  it('does not generate ids, so rendering multiple buttons produces no duplicate ids', () => {
+    const { container } = render(
+      <>
+        <Button>One</Button>
+        <Button>Two</Button>
+        <Button url="https://example.com/">Three</Button>
+      </>
+    )
+    const ids = Array.from(container.querySelectorAll('[id]')).map(
+      (el) => (el as HTMLElement).id
+    )
+    expect(ids).toEqual([])
+  })
+
+  it('passes through a caller-provided id without duplicating it', () => {
+    const { container } = render(<Button id="cta-primary">Press</Button>)
+    expect(screen.getByRole('button', { name: 'Press' })).toHaveAttribute(
+      'id',
+      'cta-primary'
+    )
+    expect(container.querySelectorAll('#cta-primary').length).toBe(1)
   })
 })

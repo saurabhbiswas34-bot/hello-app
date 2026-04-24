@@ -7,7 +7,7 @@ This guide defines how to add, modify, and remove reusable components using Atom
 ## Component vs Feature (explicit rule)
 
 - **Component**: reusable UI building block in `src/components` (atoms, molecules, organisms). It should be portable across pages/features and should not own route-level business flow.
-- **Feature**: user-facing business capability in `src/features` (for example users list). It owns page composition, data hooks, and route behavior.
+- **Feature**: user-facing business capability in `src/features` (for example the users list). It owns page composition, data hooks, and route behavior.
 - **Boundary**: features compose components; components do not become feature containers.
 - See also: `docs/conventions/FEATURE_GUIDE.md`.
 
@@ -55,7 +55,7 @@ Checklist:
 - Place in the correct Atomic layer
 - Keep props typed and minimal
 - Keep styles co-located and follow `block__element--modifier`
-- Add/update tests for behavior
+- Add/update **Vitest unit tests** (`<ComponentName>.test.tsx`) for behavior
 - Update caller imports
 - Keep component code in TypeScript (`.tsx` / `.ts`)
 
@@ -65,7 +65,7 @@ Checklist:
 
 - Keep API backward compatible where possible
 - If prop API changes, update all callers in same change
-- Update tests for both existing and new behavior
+- Update **Vitest unit tests** for both existing and new behavior
 - Confirm no feature route behavior regresses unintentionally
 - Preserve existing BEM class naming when extending styles
 - If component state orchestration grows, prefer React `useReducer` + context with clear file roles (provider, hook, reducer, context)

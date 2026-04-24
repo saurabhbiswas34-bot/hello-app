@@ -8,7 +8,7 @@ alwaysApply: true
 For structure, process, tests, and verification, use **this repository only**—do not invent parallel conventions.
 
 1. **Classify first** — Before substantive edits, follow Phase 0 in `.cursor/skills/react-quality-starter/SKILL.md` and use the skill’s phases for the classified task type (feature add/modify/remove, component work, tooling, etc.).
-2. **Features** — Follow `docs/conventions/FEATURE_GUIDE.md` (routes, feature folders, SWR data hooks, centralized API config, lazy routes, navbar when needed, tests, verification commands).
+2. **Features** — Follow `docs/conventions/FEATURE_GUIDE.md` (routes, feature folders, SWR data hooks, centralized API config, lazy routes, navbar when needed, **Vitest unit tests** and **Playwright E2E tests**, verification commands).
 3. **Reusable UI** — Follow `docs/conventions/COMPONENT_GUIDE.md` (Atomic Design layers, BEM-only CSS, TypeScript-only React, co-located styles).
 4. **Architecture** — Read `docs/architecture/ARCHITECTURE.md` before changing routing or top-level data flow; update docs when behavior or routes change.
 5. **Tooling context** — If setup or verification steps are unclear, use `docs/setup/CONTEXT_SETUP.md`.
