@@ -6,11 +6,12 @@ function AppShell() {
   return (
     <div className="app-shell">
       <header className="app-shell__header">
+        <h1 className="app-shell__title">Hello App</h1>
         <Navbar />
       </header>
-      <div className="app-shell__body">
+      <main className="app-shell__body">
         <Outlet />
-      </div>
+      </main>
     </div>
   )
 }

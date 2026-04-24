@@ -59,9 +59,8 @@ Also see implementation conventions:
 
 **Current critical flows (examples):**
 
-- App shell route navigation (`/`, `/users`, `/products`)
+- App shell route navigation (`/`, `/users`)
 - Users page rendering with data mapping
-- Products page rendering with grid/cards
 - Accordion item open/close behavior where used
 
 Extend E2E when a path is **user-visible** and **regression-prone** not for every permutation.

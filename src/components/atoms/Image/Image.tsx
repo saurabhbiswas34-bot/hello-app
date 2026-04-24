@@ -7,7 +7,7 @@ export type ImageProps = {
   ref?: Ref<HTMLImageElement>
   src: string
   alt: string
-  /** `cover`: full width, fixed aspect, object-fit (e.g. product thumbnails). */
+  /** `cover`: full width, fixed aspect, object-fit (e.g. card thumbnails). */
   variant?: ImageVariant
   className?: string
 } & Omit<

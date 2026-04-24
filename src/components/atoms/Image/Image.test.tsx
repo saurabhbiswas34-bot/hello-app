@@ -3,8 +3,8 @@ import Image from './Image'
 
 describe('Image', () => {
   it('renders with src and alt', () => {
-    render(<Image src="/p.jpg" alt="Product shot" />)
-    const img = screen.getByRole('img', { name: 'Product shot' })
+    render(<Image src="/p.jpg" alt="Hero shot" />)
+    const img = screen.getByRole('img', { name: 'Hero shot' })
     expect(img).toHaveAttribute('src', '/p.jpg')
   })
 
@@ -21,11 +21,11 @@ describe('Image', () => {
 
   it('merges optional className', () => {
     const { container } = render(
-      <Image src="/y.jpg" alt="Y" className="product-card__thumb" />
+      <Image src="/y.jpg" alt="Y" className="media-card__thumb" />
     )
     expect(container.querySelector('img')).toHaveClass(
       'image',
-      'product-card__thumb'
+      'media-card__thumb'
     )
   })
 })
