@@ -1,7 +1,7 @@
 <!--
 Title format (Conventional Commits):
   feat|fix|chore|docs|refactor|test|perf|ci|build(scope): concise subject
-Example: feat(button): SCRUM-6 - reusable Button atom per ACs
+Example: feat(users): SCRUM-XX - paginate the users accordion list
 -->
 
 ## Ticket
@@ -36,7 +36,7 @@ manual step a reviewer can run. ACs with no verification block approval.
 
 | AC  | Implementation | Verified by                                 |
 | --- | -------------- | ------------------------------------------- |
-| 1   | `src/...`      | `Button.test.tsx` / `home.spec.ts` / manual |
+| 1   | `src/...`      | `Navbar.test.tsx` / `home.spec.ts` / manual |
 | 2   |                |                                             |
 
 ## Test plan

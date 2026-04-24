@@ -4,7 +4,6 @@ import AppShell from './AppShell'
 
 const Home = lazy(() => import('../features/home/Home'))
 const Users = lazy(() => import('../features/users/Users'))
-const Products = lazy(() => import('../features/products/Products'))
 
 function App() {
   return (
@@ -24,14 +23,6 @@ function App() {
             element={
               <Suspense fallback={<p>Loading page...</p>}>
                 <Users />
-              </Suspense>
-            }
-          />
-          <Route
-            path="products"
-            element={
-              <Suspense fallback={<p>Loading page...</p>}>
-                <Products />
               </Suspense>
             }
           />

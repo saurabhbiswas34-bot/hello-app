@@ -21,9 +21,6 @@ describe('App shell navigation', () => {
     expect(
       within(primaryNav).getByRole('link', { name: /users/i })
     ).toBeInTheDocument()
-    expect(
-      within(primaryNav).getByRole('link', { name: /products/i })
-    ).toBeInTheDocument()
   })
 
   it('defaults to the Home view', async () => {

@@ -12,7 +12,7 @@ Quality in this repo is **layered**: fast static checks, accessibility, security
 - Adding CI steps or onboarding someone to the pipeline.
 - Deciding whether a new check belongs in `check:all` vs tests only.
 
-## When NOT to Treat Gates as Complete Product Quality
+## When NOT to Treat Gates as Complete Release Quality
 
 - Gates do not replace **code review**, **threat modeling**, or **manual exploratory** testing for UX.
 - `audit-ci` at `--moderate` is a **policy choice**; stricter tiers may be required for regulated environments.

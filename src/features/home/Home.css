@@ -25,6 +25,17 @@
   margin-bottom: 28px;
 }
 
+.home-page__action-link {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.home-page__action-link:hover,
+.home-page__action-link:focus-visible {
+  text-decoration-thickness: 2px;
+}
+
 .home-page__section {
   border: 1px solid var(--border);
   border-radius: 10px;

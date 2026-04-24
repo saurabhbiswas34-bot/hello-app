@@ -1,4 +1,3 @@
-import Button from '../../components/atoms/Button/Button'
 import './Home.css'
 
 function Home() {
@@ -11,21 +10,19 @@ function Home() {
         defaults.
       </p>
       <div className="home-page__actions">
-        <Button
-          url="https://storybook.js.org/"
-          newTab
-          variant="default"
-          horizontalSpacing="sm"
-          topMargin="none"
+        <a
+          className="home-page__action-link"
+          href="https://storybook.js.org/"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           Storybook docs (new tab)
-        </Button>
+        </a>
       </div>
       <section className="home-page__section">
         <h2 className="home-page__section-title">Included demos</h2>
         <p className="home-page__section-copy">
-          Use the top navigation for the Home, Users accordion, and Products
-          card demos.
+          Use the top navigation for the Home page and Users accordion demo.
         </p>
       </section>
     </div>
