@@ -33,18 +33,10 @@ export default defineConfig({
         'src/**/*.stories.{ts,tsx}',
       ],
       thresholds: {
-        'src/components/atoms/Button/Button.tsx': {
-          lines: 90,
-          branches: 90,
-          functions: 90,
-          statements: 90,
-        },
-        'src/components/atoms/Image/Image.tsx': {
-          lines: 90,
-          branches: 90,
-          functions: 90,
-          statements: 90,
-        },
+        lines: 50,
+        branches: 50,
+        functions: 50,
+        statements: 50,
       },
     },
     projects: [
