@@ -5,12 +5,12 @@ export type ButtonVariant = 'default' | 'blue' | 'red'
 
 export type ButtonSpacing = 'none' | 'sm' | 'md' | 'lg'
 
-export type ButtonProps = {
+export interface ButtonProps {
   ref?: Ref<HTMLButtonElement | HTMLAnchorElement>
   children: ReactNode
-  /** When set, renders an anchor; otherwise a native `<button type="button">`. */
+  /** When provided, the component renders an <a>; otherwise a <button type="button">. */
   url?: string
-  /** When `url` is set and `newTab` is true, opens in a new tab with safe `rel`. */
+  /** Only meaningful with `url`. Adds target="_blank" and merges rel="noopener noreferrer". */
   newTab?: boolean
   variant?: ButtonVariant
   horizontalSpacing?: ButtonSpacing
@@ -37,7 +37,7 @@ function mergeRel(
   return [...parts].join(' ')
 }
 
-function LinkSameTabIcon() {
+function SameTabIcon() {
   return (
     <svg
       className="button__icon"
@@ -45,7 +45,7 @@ function LinkSameTabIcon() {
       width={16}
       height={16}
       viewBox="0 0 16 16"
-      aria-hidden
+      aria-hidden="true"
       focusable="false"
     >
       <path
@@ -56,7 +56,7 @@ function LinkSameTabIcon() {
   )
 }
 
-function LinkNewTabIcon() {
+function NewTabIcon() {
   return (
     <svg
       className="button__icon"
@@ -64,7 +64,7 @@ function LinkNewTabIcon() {
       width={16}
       height={16}
       viewBox="0 0 16 16"
-      aria-hidden
+      aria-hidden="true"
       focusable="false"
     >
       <path
@@ -84,11 +84,11 @@ function Button({
   horizontalSpacing = 'none',
   topMargin = 'none',
   className,
+  id,
   disabled = false,
+  onClick,
   rel,
   target,
-  id,
-  onClick,
 }: ButtonProps) {
   const rootClass = [
     'button',
@@ -101,6 +101,7 @@ function Button({
     .join(' ')
 
   const trimmedUrl = url?.trim()
+
   if (trimmedUrl) {
     const resolvedRel = newTab ? mergeRel(rel, ['noopener', 'noreferrer']) : rel
     const resolvedTarget = newTab ? '_blank' : target
@@ -116,7 +117,7 @@ function Button({
         rel={resolvedRel}
       >
         <span className="button__label">{children}</span>
-        {newTab ? <LinkNewTabIcon /> : <LinkSameTabIcon />}
+        {newTab ? <NewTabIcon /> : <SameTabIcon />}
       </a>
     )
   }
