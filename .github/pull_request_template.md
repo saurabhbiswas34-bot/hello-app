@@ -34,10 +34,10 @@ One row per AC from the ticket. "Verified by" must name a real test file or a
 manual step a reviewer can run. ACs with no verification block approval.
 -->
 
-| AC  | Implementation | Verified by                                      |
-| --- | -------------- | ------------------------------------------------ |
-| 1   | `src/...`      | `ProductCard.test.tsx` / `home.spec.ts` / manual |
-| 2   |                |                                                  |
+| AC  | Implementation | Verified by                                 |
+| --- | -------------- | ------------------------------------------- |
+| 1   | `src/...`      | `Navbar.test.tsx` / `home.spec.ts` / manual |
+| 2   |                |                                             |
 
 ## Test plan
 
