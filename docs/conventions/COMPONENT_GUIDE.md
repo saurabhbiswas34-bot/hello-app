@@ -55,7 +55,7 @@ Checklist:
 - Place in the correct Atomic layer
 - Keep props typed and minimal
 - Keep styles co-located and follow `block__element--modifier`
-- Add/update tests for behavior
+- Add/update **Vitest unit tests** (`<ComponentName>.test.tsx`) for behavior
 - Update caller imports
 - Keep component code in TypeScript (`.tsx` / `.ts`)
 
@@ -65,7 +65,7 @@ Checklist:
 
 - Keep API backward compatible where possible
 - If prop API changes, update all callers in same change
-- Update tests for both existing and new behavior
+- Update **Vitest unit tests** for both existing and new behavior
 - Confirm no feature route behavior regresses unintentionally
 - Preserve existing BEM class naming when extending styles
 - If component state orchestration grows, prefer React `useReducer` + context with clear file roles (provider, hook, reducer, context)
