@@ -23,7 +23,7 @@ Related docs:
 1. `src/app/main.tsx` mounts `App` and global `index.css`.
 2. `src/app/App.tsx` defines routes and lazy-loads page components.
 3. `src/app/AppShell.tsx` renders shell layout and `Navbar`, then route content via `Outlet`.
-4. Feature pages (`Home`, `Users`) fetch/render data through feature hooks and reusable UI components.
+4. Feature pages (`Home`, `Users`, `Products`) fetch/render data through feature hooks and reusable UI components.
 
 ## Folder Model
 
@@ -43,14 +43,18 @@ src/
     users/
       hooks/
       types/
+    products/
+      hooks/
+      utils/
   types/
     accordion.ts   # shared contract
+    product.ts     # catalog item (shared with product grid UI)
 ```
 
 ### Ownership rules
 
 - Feature-owned contracts live in feature folders (for example `features/users/types/user.ts`).
-- Truly shared contracts remain in `src/types` (for example `accordion.ts`) when they are reused by shared components.
+- Truly shared contracts remain in `src/types` (for example `accordion.ts`, `product.ts` when reused by shared components).
 - Shared reusable UI lives in `src/components`.
 - Route pages live in `src/features/*` and are mounted from `src/app/App.tsx`.
 - React app code is TypeScript-only (`.tsx` for components/pages, `.ts` for modules).
@@ -68,6 +72,7 @@ Routes currently exposed:
 
 - `/` -> `Home`
 - `/users` -> `Users`
+- `/products` -> `Products`
 
 `App` uses `React.lazy` + `Suspense` for route-level code splitting.
 
@@ -82,10 +87,12 @@ Routes currently exposed:
 ### Feature hooks
 
 - `features/users/hooks/useUsersData.ts`
+- `features/products/hooks/useProductsData.ts`
 
 Hook return shapes:
 
 - `useUsersData` returns `{ items, isLoading, error }` for accordion rendering.
+- `useProductsData` returns `{ products, isLoading, error }` for the product grid.
 
 ### Accordion UI state
 

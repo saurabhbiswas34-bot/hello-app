@@ -9,6 +9,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { to: '/', label: 'Home' },
   { to: '/users', label: 'Users' },
+  { to: '/products', label: 'Products' },
 ]
 
 function Navbar() {

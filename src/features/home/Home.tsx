@@ -24,7 +24,8 @@ function Home() {
       <section className="home-page__section">
         <h2 className="home-page__section-title">Included demos</h2>
         <p className="home-page__section-copy">
-          Use the top navigation for the Home and Users accordion demos.
+          Use the top navigation for the Home, Users accordion, and Products
+          card demos.
         </p>
       </section>
     </div>

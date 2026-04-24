@@ -16,5 +16,8 @@ describe('Navbar', () => {
     expect(
       within(nav).getByRole('link', { name: /users/i })
     ).toBeInTheDocument()
+    expect(
+      within(nav).getByRole('link', { name: /products/i })
+    ).toBeInTheDocument()
   })
 })

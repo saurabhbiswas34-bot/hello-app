@@ -1,14 +1,12 @@
 {
   "mcpServers": {
     "atlassian-jira": {
-      "command": "node",
-      "args": [
-        "${workspaceFolder}/.cursor/jira-mcp-runtime/node_modules/mcp-atlassian/dist/index.js"
-      ],
+      "command": "uvx",
+      "args": ["mcp-atlassian"],
       "env": {
-        "ATLASSIAN_BASE_URL": "https://saurabhbiswas34.atlassian.net",
-        "ATLASSIAN_EMAIL": "${ATLASSIAN_EMAIL}",
-        "ATLASSIAN_API_TOKEN": "${ATLASSIAN_API_TOKEN}"
+        "JIRA_URL": "https://saurabhbiswas34.atlassian.net",
+        "JIRA_USERNAME": "${ATLASSIAN_EMAIL}",
+        "JIRA_API_TOKEN": "${ATLASSIAN_API_TOKEN}"
       }
     },
     "github": {

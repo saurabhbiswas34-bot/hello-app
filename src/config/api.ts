@@ -15,4 +15,5 @@ const API_BASE_URL = getApiBaseUrl()
 
 export const API_ENDPOINTS = {
   users: `${API_BASE_URL}/users`,
+  products: `${API_BASE_URL}/products`,
 }

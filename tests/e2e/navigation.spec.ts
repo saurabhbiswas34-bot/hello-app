@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Primary navigation', () => {
-  test('moves between Home and Users', async ({ page }) => {
+  test('moves between Home, Users, and Products', async ({ page }) => {
     await page.goto('/')
 
     await expect(
@@ -16,6 +16,13 @@ test.describe('Primary navigation', () => {
       .click()
     await expect(page).toHaveURL(/\/users$/)
     await expect(page.getByRole('heading', { name: 'Users' })).toBeVisible()
+
+    await page
+      .getByRole('navigation', { name: 'Primary' })
+      .getByRole('link', { name: 'Products' })
+      .click()
+    await expect(page).toHaveURL(/\/products$/)
+    await expect(page.getByRole('heading', { name: 'Products' })).toBeVisible()
 
     await page
       .getByRole('navigation', { name: 'Primary' })
